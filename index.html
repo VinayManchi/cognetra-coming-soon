@@ -122,6 +122,21 @@
       transition: all 240ms ease; box-shadow: 0 6px 24px rgba(212,175,55,0.25);
     }
     .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,175,55,0.35); }
+    .store-boxes { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .store-box {
+      min-width: 170px; display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 12px; text-decoration: none;
+      border: 1px solid var(--border-visible); background: var(--obsidian-elevated);
+      color: var(--text-primary);
+    }
+    .store-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .store-icon svg { width: 20px; height: 20px; display: block; }
+    .store-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .store-kicker { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+    .store-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
     /* Stats */
     .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 40px 0 60px; }
@@ -138,6 +153,18 @@
     }
     .founders-card h3 { font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
     .founders-card p { color: var(--text-secondary); font-size: 14px; margin-bottom: 16px; }
+    .founders-launch-note {
+      margin: -4px 0 16px;
+      font-size: 12px;
+      color: var(--gold-text);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+    }
     .founders-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
     .founders-stat { flex: 1; min-width: 140px; background: var(--obsidian-bg); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; }
     .founders-stat b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 24px; color: var(--gold); margin-bottom: 4px; }
@@ -159,6 +186,25 @@
     .capture-consent input { margin-top: 2px; accent-color: var(--gold); }
     .hp-field { position: absolute !important; left: -5000px !important; opacity: 0 !important; pointer-events: none !important; }
     .turnstile-wrap { margin-top: 10px; }
+    .turnstile-status {
+      display: none;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .turnstile-status.visible { display: flex; }
+    .turnstile-retry {
+      border: 1px solid var(--border-visible);
+      background: var(--obsidian-elevated);
+      color: var(--text-primary);
+      border-radius: 999px;
+      font-size: 12px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
     .capture-status { display: none; margin-top: 14px; padding: 12px; border-radius: 10px; font-size: 14px; }
     .capture-status.success { display: block; color: var(--green); background: rgba(0,245,160,0.08); border: 1px solid rgba(0,245,160,0.2); }
     .capture-status.error { display: block; color: #FF5F6D; background: rgba(255,95,109,0.08); border: 1px solid rgba(255,95,109,0.2); }
@@ -273,12 +319,21 @@
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 16px;
-      min-height: 116px;
+      min-height: 166px;
     }
     .info-slide.active { display: block; }
     .info-slide-kicker { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px; }
     .info-slide-title { font-size: 17px; line-height: 1.35; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
     .info-slide-body { font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+    .info-feature-list { display: grid; gap: 8px; }
+    .info-feature {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .info-feature-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .info-feature-body { font-size: 13px; line-height: 1.45; color: var(--text-secondary); }
     .info-dots { margin-top: 12px; display: flex; gap: 8px; justify-content: center; }
     .info-dot {
       width: 8px; height: 8px; border-radius: 999px; border: none; cursor: pointer;
@@ -318,6 +373,9 @@
       .hero-trust { gap: 6px; }
       .hero-trust span { font-size: 11px; padding: 6px 10px; }
       .hero-cta { width: 100%; justify-content: center; padding: 14px 20px; }
+      .store-boxes { margin-top: 12px; }
+      .store-box { flex: 1; min-width: 0; }
+      .store-name { font-size: 13px; }
       .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
       .stat-card { padding: 14px; }
       .stat-number { font-size: 30px; }
@@ -337,10 +395,12 @@
       .tab-nav button { min-width: 100px; font-size: 12px; padding: 10px 12px; }
       .tab-content-panel { padding: 18px; min-height: 0; }
       .tab-content-panel h3 { font-size: 18px; margin-bottom: 12px; }
-      .info-slide { min-height: 108px; padding: 14px; }
+      .info-slide { min-height: 148px; padding: 14px; }
       .info-slide-kicker { font-size: 10px; }
-      .info-slide-title { font-size: 15px; margin-bottom: 6px; }
+      .info-slide-title { font-size: 15px; margin-bottom: 8px; }
       .info-slide-body { font-size: 13px; }
+      .info-feature-title { font-size: 12px; }
+      .info-feature-body { font-size: 12px; }
       .what-section h2, .helps-section h2, .tabs-section h2 { font-size: 26px; margin-bottom: 16px; }
       .what-card, .help-card { padding: 16px; }
       footer { margin-top: 36px; padding: 24px 0; }
@@ -397,6 +457,34 @@
           <span>🏛 No Account. Ever.</span>
         </div>
         <a href="#waitlist" class="hero-cta">Join the Waitlist →</a>
+        <div class="store-boxes" aria-label="App store availability">
+          <div class="store-box">
+            <span class="store-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M15.1 3.2c-.8 1-1.3 2.1-1.2 3.3 1.2.1 2.5-.6 3.3-1.6.8-.9 1.3-2.2 1.2-3.4-1.2 0-2.5.7-3.3 1.7z" fill="#EAF0FF"/>
+                <path d="M19.7 12.5c0-3-2.4-4.4-2.5-4.5-1.4-.8-3-.8-3.7-.8-1.6 0-2.8.8-3.6.8-.8 0-1.9-.8-3.2-.8-1.6 0-3.1.9-4 2.3-1.8 2.8-.4 7 1.3 9.4.8 1.2 1.8 2.5 3.1 2.4 1.2 0 1.7-.7 3.1-.7s1.8.7 3.1.7c1.3 0 2.1-1.2 2.9-2.4.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-.9-2.5-3.7 0-2.3 1.9-3.4 2-3.5-.1-.2-1.1-1.8-3.2-1.9-1.5-.2-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.2 0-2.5.7-3.3 1.9-1.4 2.2-.4 5.4 1 7.3.7 1 1.5 2.1 2.6 2.1 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.2 1.1-2.3 1.1-2.4 0 0-2.1-.8-2.1-3.1z" fill="#EAF0FF"/>
+              </svg>
+            </span>
+            <span class="store-text">
+              <span class="store-kicker">Planned on launch</span>
+              <span class="store-name">App Store</span>
+            </span>
+          </div>
+          <div class="store-box">
+            <span class="store-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3.8 3.4c-.4.4-.6 1-.6 1.9v13.4c0 .9.2 1.5.6 1.9l.1.1 7.5-7.5v-.4L3.9 3.3l-.1.1z" fill="#00D4FF"/>
+                <path d="M14 11.8l-2.6 2.6 3.8 3.8.1-.1 4.4-2.5c1.2-.7 1.2-1.8 0-2.5l-4.4-2.5-.1-.1-3.8 3.8 2.6 2.6z" fill="#00F5A0"/>
+                <path d="M15.3 18.2l-3.9-3.9-7.6 7.6c.6.6 1.6.7 2.8 0l8.7-3.7z" fill="#7C6CF8"/>
+                <path d="M15.3 5.8L6.6 2.1c-1.2-.7-2.2-.6-2.8 0l7.6 7.6 3.9-3.9z" fill="#D4AF37"/>
+              </svg>
+            </span>
+            <span class="store-text">
+              <span class="store-kicker">Planned on launch</span>
+              <span class="store-name">Google Play</span>
+            </span>
+          </div>
+        </div>
       </div>
       <div class="hero-right">
         <div class="phone-frame">
@@ -423,6 +511,7 @@
       <div class="founders-card" id="founders">
         <h3>🏛 Founder's Circle — Lifetime Access</h3>
         <p>Own your cognitive journey forever. One payment. All features. All future updates. Limited to <strong style="font-family:'JetBrains Mono',monospace;color:var(--gold);">5,000</strong> members.</p>
+        <div class="founders-launch-note">🚀 Founder access begins on day one of public app release.</div>
         <div class="founders-stats">
           <div class="founders-stat"><b>$249</b><span>One‑time payment</span></div>
           <div class="founders-stat"><b>5,000</b><span>Member cap</span></div>
@@ -446,6 +535,10 @@
           <span>I agree to receive waitlist and launch updates from Cognetra. I can unsubscribe anytime.</span>
         </label>
         <div id="turnstileWrap" class="turnstile-wrap"></div>
+        <div id="turnstileStatus" class="turnstile-status">
+          <span id="turnstileStatusText">Security check unavailable. Please retry.</span>
+          <button type="button" id="turnstileRetryBtn" class="turnstile-retry">Retry security check</button>
+        </div>
         <p class="capture-note">One field only. No spam. No email selling. Ever. <span style="opacity:0.6">Stored securely — we'll only email launch updates.</span></p>
         <div class="capture-status" id="captureStatus"></div>
       </div>
@@ -516,25 +609,78 @@
     const consentCheckbox = document.getElementById('consentCheckbox');
     const companyInput = document.getElementById('companyInput');
     const turnstileWrap = document.getElementById('turnstileWrap');
+    const turnstileStatus = document.getElementById('turnstileStatus');
+    const turnstileStatusText = document.getElementById('turnstileStatusText');
+    const turnstileRetryBtn = document.getElementById('turnstileRetryBtn');
     
     const WAITLIST_ENDPOINT = '/api/waitlist/join';
     const TURNSTILE_SITE_KEY = '0x4AAAAAADG8CUznYKl4stcM';
+    const TURNSTILE_STRICT_MODE = true;
     let turnstileToken = '';
     let turnstileWidgetId = null;
+    let turnstileRenderable = false;
+    let turnstileLoadTimeout = null;
+
+    function showTurnstileStatus(message) {
+      if (!turnstileStatus) return;
+      turnstileStatusText.textContent = message;
+      turnstileStatus.classList.add('visible');
+    }
+
+    function hideTurnstileStatus() {
+      if (!turnstileStatus) return;
+      turnstileStatus.classList.remove('visible');
+    }
     
     function initTurnstile() {
       if (!TURNSTILE_SITE_KEY || !turnstileWrap || !window.turnstile || turnstileWidgetId !== null) return;
-      turnstileWidgetId = window.turnstile.render(turnstileWrap, {
-        sitekey: TURNSTILE_SITE_KEY,
-        theme: 'dark',
-        callback: (token) => { turnstileToken = token; },
-        'error-callback': () => { turnstileToken = ''; },
-        'expired-callback': () => { turnstileToken = ''; }
-      });
+      try {
+        turnstileWidgetId = window.turnstile.render(turnstileWrap, {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: 'dark',
+          callback: (token) => {
+            turnstileToken = token;
+            turnstileRenderable = true;
+            hideTurnstileStatus();
+          },
+          'error-callback': () => {
+            turnstileToken = '';
+            showTurnstileStatus('Security check unavailable. Please retry.');
+          },
+          'expired-callback': () => {
+            turnstileToken = '';
+            showTurnstileStatus('Security check expired. Please retry.');
+          }
+        });
+      } catch (_err) {
+        showTurnstileStatus('Security check unavailable. Please retry.');
+      }
     }
     initTurnstile();
     window.addEventListener('load', initTurnstile);
     setTimeout(initTurnstile, 300);
+    if (TURNSTILE_SITE_KEY && TURNSTILE_STRICT_MODE) {
+      turnstileLoadTimeout = setTimeout(() => {
+        if (!turnstileToken && !turnstileRenderable) {
+          showTurnstileStatus('Security check unavailable. Please retry.');
+        }
+      }, 6000);
+    }
+    turnstileRetryBtn?.addEventListener('click', () => {
+      turnstileToken = '';
+      if (window.turnstile && turnstileWidgetId !== null) {
+        try {
+          window.turnstile.reset(turnstileWidgetId);
+          showTurnstileStatus('Retrying security check...');
+          return;
+        } catch (_err) {
+          // fall through to re-render
+        }
+      }
+      turnstileWidgetId = null;
+      initTurnstile();
+      showTurnstileStatus('Retrying security check...');
+    });
     
     function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
@@ -553,10 +699,12 @@
         consentCheckbox.focus();
         return;
       }
-      if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      if (TURNSTILE_SITE_KEY && TURNSTILE_STRICT_MODE && !turnstileToken) {
         initTurnstile();
         captureStatus.className = 'capture-status error';
-        captureStatus.textContent = 'Please complete the security check and try again.';
+        captureStatus.textContent = turnstileStatus?.classList.contains('visible')
+          ? 'Security check unavailable. Please retry.'
+          : 'Please complete the security check and try again.';
         return;
       }
 
@@ -854,11 +1002,56 @@
     // INFO TABS
     // ============================================================
     const infoTabs = {
-      today: { title: 'Today — Your real‑time cognitive state', points: ['Processing Efficiency % on the Neural Orb with contextual whisper','Nova Coach: Socratic AI insights generated on‑device','Begin Session button with merged label — one tap starts optimal workout','Biometrics pills show HR, sleep, readiness trends','Quarterly Booster card at months 3/6/9/12'] },
-      train: { title: 'Train — 11 research‑mapped exercises', points: ['Domain Strength bars replace radar charts across 5 domains','Three‑tier clinical classification: ACTIVE‑Aligned, Executive Function, General Cognitive','Scientific badges visible on each card (🏛 ⭐ 🔬 👁)','Starter sequence of 3 exercises shown first','RL Coach with Socratic recommendations'] },
-      insights: { title: 'Insights — Long‑term patterns', points: ['Narrative Weekly Summary with theme + Socratic question','Processing Efficiency trend — 7D free, 30D Premium with blurred preview','Fatigue Trend Card with actionable alert throttled 2×/week','Percentiles delayed until session 5 ("Building Baseline")','Shareable snapshot with Obsidian Veil watermark'] },
-      connect: { title: 'Connect — Accountability, privately', points: ['Buddy system with rate‑limited encouragements (3/day)','Leaderboard with explicit opt‑in consent modal','Pass & Play + Async Challenge in single Duel card','Solo Streak calendar with anticipation ghost dot','Community Impact in You tab (Philanthropy Hub)'] },
-      you: { title: 'You — Identity, science, and controls', points: ['Default identity: "Neural Pilot" — never "Guest"','Cognitive Profile PDF — 1 free, Premium thereafter','The Science section with 11 peer‑reviewed citations','All 9 HUD themes: Neural Core free + 8 Premium/Premium++','Philanthropy Hub + Care Team async support'] }
+      today: { title: 'Today — Your real‑time cognitive state', points: [
+        'Neural Orb: Processing Efficiency % is shown with a contextual state whisper for immediate readiness framing.',
+        'Nova Coach: Socratic AI guidance is generated on-device and tuned to current cognitive state.',
+        'Begin Session CTA: One merged action starts the optimal workout with low decision friction.',
+        'Biometrics Row: HR, sleep, and readiness are surfaced as compact pills for quick scanning.',
+        'Daily Plan: Recommendations are paired with progress context so users know what to do next.',
+        'Focus Sound: Ambient mode appears inline and reflects readiness without extra navigation.',
+        'Progressive Density: Session 1 stays minimal, then content depth expands over time.',
+        'Quarterly Booster: Milestone card appears at months 3/6/9/12 to reinforce long-term consistency.'
+      ] },
+      train: { title: 'Train — 11 research‑mapped exercises', points: [
+        'Domain Strength: Bar-based scoring replaces radar charts for faster cross-domain readability.',
+        'Clinical Tiering: Exercises are grouped into ACTIVE-Aligned, Executive Function, and General Cognitive.',
+        'Research Badges: ACTIVE, PVT, UFOV, and N-Back references stay visible on exercise cards.',
+        'Starter Sequence: Three default exercises reduce overwhelm and improve first-session conversion.',
+        'Catalog Depth: Full exercise library remains one tap deeper to keep primary view clean.',
+        'Adaptive Challenge: Difficulty shifts with current capacity to prevent fatigue and disengagement.',
+        'Personalized Prompt: Recommendation card highlights weakest domain and best next drill.',
+        'Support Utilities: Breathing and brain-weather tools are available without leaving Train context.'
+      ] },
+      insights: { title: 'Insights — Long‑term patterns', points: [
+        'Weekly Narrative: Summary combines trend theme with one reflective Socratic question.',
+        'Trend Depth: 7D trend is free while 30D premium view appears as a soft preview layer.',
+        'Immediate Utility: This Week and Next Action cards appear first to guide behavior now.',
+        'Fatigue Tracking: Actionable fatigue alerts are intentionally throttled to avoid noise.',
+        'Baseline Logic: Percentiles are delayed until session 5 to protect interpretation quality.',
+        'Privacy Snapshot: Shareable insights include watermark and explicit privacy controls.',
+        'Milestone Design: Progress language avoids gamified pressure and keeps tone clinical.',
+        'Coach Translation: Insight cards connect observed patterns to practical next-step actions.'
+      ] },
+      connect: { title: 'Connect — Accountability, privately', points: [
+        'Milestone Unlock: Connect opens after Day 3 to protect early-session focus and retention.',
+        'Buddy Nudges: Encouragement is rate-limited to three per day to prevent social fatigue.',
+        'Opt-in Ranking: Leaderboard appears only after explicit consent with visible guardrails.',
+        'Unified Duel: Pass & Play and Async Challenge live in one card for cleaner decision flow.',
+        'Solo Calendar: Streak map includes anticipation ghost dot to support daily return loops.',
+        'Momentum View: Consistency heatmap emphasizes trend momentum over public comparison.',
+        'Supportive Prompts: Social copy stays short, positive, and anti-shaming by design.',
+        'Impact Sync: Community impact aligns with Philanthropy Hub metrics in the You tab.'
+      ] },
+      you: { title: 'You — Identity, science, and controls', points: [
+        'Identity Language: Default profile label is "Neural Pilot" to keep tone premium and intentional.',
+        'Control Layers: Essentials / Advanced split keeps settings discoverable without clutter.',
+        'Profile Access: Cognitive Profile PDF allows one free run, then premium continuation.',
+        'Evidence Panel: Science section includes 11 peer-reviewed references for trust.',
+        'Theme System: Nine HUD themes are available, with Neural Core free and premium expansions.',
+        'Privacy Access: Data controls stay explicit and reachable in one tap from settings.',
+        'Care Visibility: Support and care response expectations are clearly communicated.',
+        'Impact Ledger: Philanthropy Hub tracks cumulative contribution with lightweight storytelling.'
+      ] }
     };
 
     const tabNav = document.getElementById('tabNav');
@@ -880,21 +1073,36 @@
       return { title: point.trim(), body: '' };
     }
 
+    function chunkPoints(points, size = 3) {
+      const chunks = [];
+      for (let i = 0; i < points.length; i += size) chunks.push(points.slice(i, i + size));
+      return chunks;
+    }
+
     function renderInfoSlides(key) {
       const t = infoTabs[key];
-      const currentIdx = infoSlideState[key] || 0;
-      const slides = t.points.map((p, i) => {
-        const parsed = splitPoint(p);
+      const groups = chunkPoints(t.points, 3);
+      const currentIdx = Math.min(infoSlideState[key] || 0, groups.length - 1);
+      const slides = groups.map((group, i) => {
+        const rows = group.map((p) => {
+          const parsed = splitPoint(p);
+          return `
+            <div class="info-feature">
+              <div class="info-feature-title">${parsed.title}</div>
+              ${parsed.body ? `<div class="info-feature-body">${parsed.body}</div>` : ''}
+            </div>
+          `;
+        }).join('');
         return `
           <article class="info-slide${i === currentIdx ? ' active' : ''}" data-slide-idx="${i}">
-            <div class="info-slide-kicker">Feature ${i + 1} of ${t.points.length}</div>
-            <div class="info-slide-title">${parsed.title}</div>
-            ${parsed.body ? `<div class="info-slide-body">${parsed.body}</div>` : ''}
+            <div class="info-slide-kicker">Highlights ${i + 1} of ${groups.length}</div>
+            <div class="info-slide-title">${t.title}</div>
+            <div class="info-feature-list">${rows}</div>
           </article>
         `;
       }).join('');
 
-      const dots = t.points.map((_, i) => `<button class="info-dot${i === currentIdx ? ' active' : ''}" data-dot-idx="${i}" aria-label="View slide ${i + 1}"></button>`).join('');
+      const dots = groups.map((_, i) => `<button class="info-dot${i === currentIdx ? ' active' : ''}" data-dot-idx="${i}" aria-label="View slide ${i + 1}"></button>`).join('');
       tabContent.innerHTML = `<h3>${t.title}</h3><div class="info-slider" data-info-key="${key}">${slides}<div class="info-dots">${dots}</div></div>`;
     }
 
@@ -910,8 +1118,8 @@
     }
 
     function setInfoSlide(key, idx) {
-      const points = infoTabs[key].points;
-      infoSlideState[key] = (idx + points.length) % points.length;
+      const groups = chunkPoints(infoTabs[key].points, 3);
+      infoSlideState[key] = (idx + groups.length) % groups.length;
       renderInfoSlides(key);
     }
 
@@ -919,8 +1127,10 @@
       if (infoAutoTimer) clearInterval(infoAutoTimer);
       if (isHoveringInfoPanel) return;
       infoAutoTimer = setInterval(() => {
-        const idx = infoSlideState[currentInfoTab] || 0;
-        setInfoSlide(currentInfoTab, idx + 1);
+        const tabKeys = Object.keys(infoTabs);
+        const currentIdx = tabKeys.indexOf(currentInfoTab);
+        const nextTab = tabKeys[(currentIdx + 1) % tabKeys.length];
+        renderInfoTab(nextTab);
       }, 3200);
     }
 
