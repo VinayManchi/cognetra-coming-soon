@@ -32,10 +32,18 @@ Premium coming soon page for cognetra.app
 1. Create a Supabase project and run `waitlist.schema.sql`.
 2. Add env vars from `.env.example` in Vercel project settings.
 3. Verify your sender domain in Resend and set `RESEND_FROM`.
-4. Deploy. The form in `index.html` posts to `/api/waitlist/join`.
+4. Optional but recommended: configure Cloudflare Turnstile and set `TURNSTILE_SECRET_KEY`.
+5. Set `TURNSTILE_SITE_KEY` in `index.html` (search for `const TURNSTILE_SITE_KEY = ''`).
+6. Deploy. The form in `index.html` posts to `/api/waitlist/join`.
 
 Flow:
 - User submits email + consent.
 - API stores `pending` record and sends confirmation email.
 - User confirms via secure token link.
 - API marks record `confirmed` and sends welcome email.
+
+Security hardening included:
+- Supabase-backed rate limiting (IP + email window limits).
+- Honeypot field block.
+- Optional Cloudflare Turnstile verification.
+- Waitlist audit events (`waitlist_events`) for abuse monitoring.

@@ -26,6 +26,10 @@ function getBaseUrl(req) {
   return `${proto}://${host}`;
 }
 
+function getClientIp(req) {
+  return (req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim() || null;
+}
+
 async function supabaseRequest(path, options = {}) {
   const baseUrl = process.env.SUPABASE_URL;
   const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -49,6 +53,42 @@ async function supabaseRequest(path, options = {}) {
   }
   if (response.status === 204) return null;
   return response.json();
+}
+
+async function verifyTurnstileToken({ token, ip }) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return { ok: true, skipped: true };
+  if (!token) return { ok: false, reason: 'missing_token' };
+
+  const body = new URLSearchParams();
+  body.set('secret', secret);
+  body.set('response', token);
+  if (ip) body.set('remoteip', ip);
+
+  const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString()
+  });
+  const data = await resp.json().catch(() => ({}));
+  return { ok: !!data.success, reason: data['error-codes']?.[0] || null };
+}
+
+async function logWaitlistEvent(event) {
+  try {
+    await supabaseRequest('waitlist_events', {
+      method: 'POST',
+      body: {
+        event_type: event.eventType,
+        email: event.email || null,
+        ip: event.ip || null,
+        user_agent: event.userAgent || null,
+        reason: event.reason || null
+      }
+    });
+  } catch (_err) {
+    // Non-blocking audit logging.
+  }
 }
 
 async function sendEmail({ to, subject, html }) {
@@ -81,6 +121,9 @@ module.exports = {
   hashToken,
   randomToken,
   getBaseUrl,
+  getClientIp,
   supabaseRequest,
+  verifyTurnstileToken,
+  logWaitlistEvent,
   sendEmail
 };

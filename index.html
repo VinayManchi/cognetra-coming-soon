@@ -156,6 +156,8 @@
     .capture-note { font-size: 13px; color: var(--text-muted); margin-top: 12px; }
     .capture-consent { margin-top: 10px; display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-muted); }
     .capture-consent input { margin-top: 2px; accent-color: var(--gold); }
+    .hp-field { position: absolute !important; left: -5000px !important; opacity: 0 !important; pointer-events: none !important; }
+    .turnstile-wrap { margin-top: 10px; }
     .capture-status { display: none; margin-top: 14px; padding: 12px; border-radius: 10px; font-size: 14px; }
     .capture-status.success { display: block; color: var(--green); background: rgba(0,245,160,0.08); border: 1px solid rgba(0,245,160,0.2); }
     .capture-status.error { display: block; color: #FF5F6D; background: rgba(255,95,109,0.08); border: 1px solid rgba(255,95,109,0.2); }
@@ -388,10 +390,12 @@
           <input type="email" id="emailInput" class="capture-input" placeholder="you@example.com" autocomplete="email" />
           <button class="capture-btn" id="joinButton">Join Waitlist</button>
         </div>
+        <input type="text" id="companyInput" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" />
         <label class="capture-consent">
           <input type="checkbox" id="consentCheckbox" />
           <span>I agree to receive waitlist and launch updates from Cognetra. I can unsubscribe anytime.</span>
         </label>
+        <div id="turnstileWrap" class="turnstile-wrap"></div>
         <p class="capture-note">One field only. No spam. No email selling. Ever. <span style="opacity:0.6">Stored securely — we'll only email launch updates.</span></p>
         <div class="capture-status" id="captureStatus"></div>
       </div>
@@ -451,6 +455,7 @@
     </footer>
   </main>
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script>
     // ============================================================
     // WAITLIST — Double opt-in via API
@@ -459,8 +464,22 @@
     const joinButton = document.getElementById('joinButton');
     const captureStatus = document.getElementById('captureStatus');
     const consentCheckbox = document.getElementById('consentCheckbox');
+    const companyInput = document.getElementById('companyInput');
+    const turnstileWrap = document.getElementById('turnstileWrap');
     
     const WAITLIST_ENDPOINT = '/api/waitlist/join';
+    const TURNSTILE_SITE_KEY = '0x4AAAAAADG8CUznYKl4stcM';
+    let turnstileToken = '';
+    
+    if (TURNSTILE_SITE_KEY && window.turnstile && turnstileWrap) {
+      window.turnstile.render(turnstileWrap, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: 'dark',
+        callback: (token) => { turnstileToken = token; },
+        'error-callback': () => { turnstileToken = ''; },
+        'expired-callback': () => { turnstileToken = ''; }
+      });
+    }
     
     function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
@@ -479,6 +498,11 @@
         consentCheckbox.focus();
         return;
       }
+      if (TURNSTILE_SITE_KEY && !turnstileToken) {
+        captureStatus.className = 'capture-status error';
+        captureStatus.textContent = 'Please complete the security check and try again.';
+        return;
+      }
 
       // Show loading
       joinButton.disabled = true;
@@ -492,6 +516,8 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             email: email,
+            company: companyInput.value,
+            turnstileToken,
             consent: true,
             consentVersion: 'waitlist_v1',
             source: 'coming_soon_landing'

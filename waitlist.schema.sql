@@ -15,3 +15,17 @@ create table if not exists public.waitlist_signups (
 );
 
 create index if not exists waitlist_signups_status_idx on public.waitlist_signups (status);
+
+create table if not exists public.waitlist_events (
+  id uuid primary key default gen_random_uuid(),
+  event_type text not null,
+  email text,
+  ip text,
+  user_agent text,
+  reason text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists waitlist_events_email_created_idx on public.waitlist_events (email, created_at desc);
+create index if not exists waitlist_events_ip_created_idx on public.waitlist_events (ip, created_at desc);
+create index if not exists waitlist_events_type_created_idx on public.waitlist_events (event_type, created_at desc);
