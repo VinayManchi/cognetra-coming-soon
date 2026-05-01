@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cognetra — The Cognitive Cockpit, Private by Design</title>
-  <meta name="description" content="Cognetra is the cognitive eye — a privacy-first cognitive training app built on peer-reviewed protocols. No cloud. No sign-in. Just measurable clarity, private to your device. Join the Founder's Circle waitlist." />
+  <meta name="description" content="Cognetra is the cognitive eye — a privacy-first cognitive training app built on peer-reviewed protocols. No cloud by default. No sign-in required. Just measurable clarity, private to your device. Join the Founder's Circle waitlist." />
   <meta name="theme-color" content="#0A0A0C" />
   <meta property="og:title" content="Cognetra — Train your brain. Own your data." />
   <meta property="og:description" content="The cognitive eye built on peer-reviewed science. No account required. 11 exercises across five cognitive domains. Join the waitlist." />
@@ -485,7 +485,7 @@
       <div class="hero-left">
         <div class="hero-eyebrow"><i></i>Privacy-First · No Account Required</div>
         <h1>Train your brain.<br /><span class="gold">Own your data.</span></h1>
-        <p class="hero-sub">Cognetra is the cognitive eye <span style="opacity:0.82;">(from Latin <em>cogni</em> + Sanskrit <em>netra</em>)</span> built on peer-reviewed protocols. No cloud. No sign-in. 11 exercises across five cognitive domains. Just measurable clarity, private to your device — so you can see clearly.</p>
+        <p class="hero-sub">Cognetra is the cognitive eye <span style="opacity:0.82;">(from Latin <em>cogni</em> + Sanskrit <em>netra</em>)</span> built on peer-reviewed protocols. No cloud by default. No sign-in required. 11 exercises across five cognitive domains. Just measurable clarity, private to your device — so you can see clearly.</p>
         <div class="hero-trust">
           <span>🔬 ACTIVE Trial Protocol</span>
           <span>👁 UFOV Research-Aligned</span>
@@ -634,7 +634,7 @@
           <span>I agree to receive waitlist and launch updates from Cognetra. I can unsubscribe anytime.</span>
         </label>
         <div id="turnstileWrap" class="turnstile-wrap"></div>
-        <div id="turnstileStatus" class="turnstile-status">
+        <div id="turnstileStatus" class="turnstile-status" hidden>
           <span id="turnstileStatusText">Security check unavailable. Please retry.</span>
           <button type="button" id="turnstileRetryBtn" class="turnstile-retry">Retry security check</button>
         </div>
@@ -645,9 +645,14 @@
 
     <footer class="container">
       <div class="footer-inner">
-        <div class="footer-left">© 2026 Cognetra · No accounts. No cloud. Just clarity.</div>
+        <div class="footer-left">© 2026 Cognetra · No accounts by default. No cloud by default. Optional encrypted backup.</div>
         <div class="footer-links">
-          <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/transparency">Transparency</a><a href="/statement-of-limitations">Limitations</a><a href="/about">About</a><a href="/contact">Contact</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/transparency">Transparency</a>
+          <a href="/statement-of-limitations">Limitations</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
         </div>
         <div class="footer-links">
           <a href="https://x.com/cognetra" target="_blank" rel="noopener noreferrer">X</a>
@@ -684,12 +689,14 @@
     function showTurnstileStatus(message) {
       if (!turnstileStatus) return;
       turnstileStatusText.textContent = message;
+      turnstileStatus.hidden = false;
       turnstileStatus.classList.add('visible');
     }
 
     function hideTurnstileStatus() {
       if (!turnstileStatus) return;
       turnstileStatus.classList.remove('visible');
+      turnstileStatus.hidden = true;
     }
     
     function initTurnstile() {
