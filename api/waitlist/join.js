@@ -71,6 +71,7 @@ module.exports = async function handler(req, res) {
 
     return json(res, 200, { ok: true, status: 'pending_confirmation' });
   } catch (error) {
-    return json(res, 500, { error: 'Failed to process waitlist signup' });
+    const debug = process.env.NODE_ENV === 'production' ? undefined : String(error && error.message ? error.message : 'unknown');
+    return json(res, 500, { error: 'Failed to process waitlist signup', debug });
   }
 };

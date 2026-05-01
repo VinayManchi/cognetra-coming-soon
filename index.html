@@ -178,14 +178,14 @@
       overflow: hidden; position: relative;
     }
     .phone-view {
-      padding: 14px 12px 0; height: calc(100% - 76px);
+      padding: 14px 12px 88px; height: calc(100% - 76px);
       overflow-y: auto; scrollbar-width: none;
       opacity: 0; transform: translateY(6px);
       transition: opacity 350ms ease, transform 350ms ease;
       position: absolute; top: 28px; left: 0; right: 0; bottom: 0;
     }
     .phone-view::-webkit-scrollbar { display: none; }
-    .phone-view.active { opacity: 1; transform: translateY(0); position: relative; z-index: 2; }
+    .phone-view.active { opacity: 1; transform: translateY(0); position: absolute; z-index: 2; }
 
     .phone-tab-bar {
       position: absolute; bottom: 8px; left: 8px; right: 8px;
@@ -226,18 +226,22 @@
     .phone-bar-track { height: 5px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; flex: 1; }
     .phone-bar-fill { height: 100%; border-radius: 999px; }
     .phone-orb {
-      width: 100px; height: 100px; border-radius: 50%; margin: 10px auto;
+      width: 112px; height: 112px; border-radius: 50%; margin: 8px auto 10px;
       border: 2px solid var(--cyan); box-shadow: 0 0 20px rgba(0,212,255,0.25);
       display: flex; align-items: center; justify-content: center;
       animation: orbBreathe 4s ease-in-out infinite;
     }
     @keyframes orbBreathe { 0%,100%{transform:scale(1)}50%{transform:scale(1.025)} }
     .orb-inner {
-      width: 76px; height: 76px; border-radius: 50%;
+      width: 84px; height: 84px; border-radius: 50%;
       border: 1px solid rgba(0,212,255,0.2);
       background: rgba(13,22,40,0.9);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
+    .orb-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 23px; line-height: 1; color: #EEF2FF; }
+    .orb-state { font-size: 9px; color: #00F5A0; font-weight: 600; margin-top: 2px; line-height: 1.15; text-align: center; }
+    .orb-label { font-size: 6px; color: rgba(189,199,223,0.62); letter-spacing: 1.2px; margin-top: 2px; line-height: 1.1; }
+    .orb-mood { font-size: 8px; color: #00D4FF; margin-top: 2px; line-height: 1; }
 
     /* Help Section */
     .helps-section { margin: 60px 0; }
@@ -292,7 +296,23 @@
       .capture-row { grid-template-columns: 1fr; }
       .founders-stats { flex-direction: column; }
       .tab-nav { overflow-x: auto; }
-      .phone-frame { width: 260px; height: 540px; }
+      .phone-frame { width: min(86vw, 292px); height: min(74vh, 590px); padding: 14px; border-radius: 34px; }
+      .phone-screen { border-radius: 22px; }
+      .phone-tab-bar { height: 52px; left: 7px; right: 7px; bottom: 7px; }
+      .phone-tab-icon { font-size: 14px; }
+      .phone-tab-label { font-size: 7px; }
+      .phone-view { padding: 12px 10px 84px; top: 22px; }
+      .phone-card { padding: 9px; border-radius: 11px; }
+      .phone-orb { width: 102px; height: 102px; margin-top: 6px; }
+      .orb-inner { width: 76px; height: 76px; }
+      .orb-value { font-size: 20px; }
+      .orb-state { font-size: 8px; }
+      .orb-label { font-size: 5px; letter-spacing: 1px; }
+      .orb-mood { font-size: 7px; }
+    }
+    @media (max-width: 380px) {
+      .phone-frame { width: min(90vw, 276px); height: min(70vh, 560px); }
+      .phone-view { padding-bottom: 80px; }
     }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
@@ -489,8 +509,12 @@
           ? '✓ This email is already confirmed on the waitlist.'
           : '✓ Check your inbox to confirm your waitlist spot. We only activate your subscription after confirmation.';
       } catch (err) {
+        const message = String(err && err.message ? err.message : '');
+        const isBackendMissing = message.includes('404') || message.includes('Failed to fetch') || message.includes('NetworkError');
         captureStatus.className = 'capture-status error';
-        captureStatus.innerHTML = '⚠ Something went wrong. Please try again or email us directly at <strong>hello@cognetra.app</strong>.';
+        captureStatus.innerHTML = isBackendMissing
+          ? '⚠ Waitlist backend is not reachable yet. Deploy with API routes + env vars, then retry.'
+          : '⚠ Something went wrong. Please try again or email us directly at <strong>hello@cognetra.app</strong>.';
         joinButton.disabled = false;
         joinButton.textContent = 'Join Waitlist';
       }
@@ -528,7 +552,7 @@
             </div>
             <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(189,199,223,0.7);"><span>✨</span><span style="font-family:'JetBrains Mono',monospace;">🔥 12</span></div>
           </div>
-          <div class="phone-orb"><div class="orb-inner"><div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:24px;color:#EEF2FF;">87%</div><div style="font-size:10px;color:#00F5A0;font-weight:500;">Strong Capacity</div><div style="font-size:7px;color:rgba(189,199,223,0.6);letter-spacing:1px;">PROCESSING EFF.</div><div style="font-size:9px;color:#00D4FF;">• Relaxed •</div></div></div>
+          <div class="phone-orb"><div class="orb-inner"><div class="orb-value">87%</div><div class="orb-state">Strong Capacity</div><div class="orb-label">PROCESSING EFF.</div><div class="orb-mood">• Relaxed •</div></div></div>
           <div style="text-align:center;font-size:12px;color:#00F5A0;margin-top:6px;">Ready for deep work</div>
           <div style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:8px;font-size:11px;color:rgba(92,107,192,0.9);"><span>🎧</span><span>Focus Sound · Active</span></div>
           <div class="phone-card" style="border-color:rgba(0,212,255,0.2);">
@@ -586,6 +610,15 @@
             <div style="font-size:8px;color:rgba(189,199,223,0.8);">Neural Network · Lvl 4 · Recall (Memory)</div>
             <div style="font-size:7px;color:rgba(189,199,223,0.6);margin-top:2px;">💡 Your weakest domain — consistent training here builds balanced cognition.</div>
           </div>
+          <div class="phone-card">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;margin-bottom:4px;">TODAY'S TRAINING FOCUS</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <span style="font-size:7px;background:rgba(0,245,160,0.12);color:#00F5A0;border:1px solid rgba(0,245,160,0.25);border-radius:8px;padding:3px 6px;">Attention +2</span>
+              <span style="font-size:7px;background:rgba(124,108,248,0.15);color:#BDB3FF;border:1px solid rgba(124,108,248,0.3);border-radius:8px;padding:3px 6px;">Memory stable</span>
+              <span style="font-size:7px;background:rgba(0,212,255,0.12);color:#00D4FF;border:1px solid rgba(0,212,255,0.25);border-radius:8px;padding:3px 6px;">Speed recovering</span>
+            </div>
+            <div style="text-align:center;font-size:8px;color:#5C6BC0;margin-top:6px;">Nova tip: Train before noon for best consistency</div>
+          </div>
         `
       },
       {
@@ -611,6 +644,14 @@
           <div class="phone-card">
             <div style="font-size:8px;font-weight:600;color:#EEF2FF;">💡 Nova's weekly insight <span style="font-size:7px;background:rgba(124,108,248,0.2);color:#b9b0ff;border-radius:4px;padding:1px 5px;">🧠 On-device AI</span></div>
             <div style="font-size:8px;color:rgba(189,199,223,0.8);margin-top:4px;">Processing speed improved <span style="font-family:'JetBrains Mono',monospace;">12%</span> this week. What felt different about your training?</div>
+          </div>
+          <div class="phone-card">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;margin-bottom:4px;">MILESTONES</div>
+            <div style="display:grid;gap:4px;">
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.82);"><span>7-day consistency</span><span style="color:#00F5A0;">Unlocked</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.82);"><span>Baseline confidence</span><span style="color:#00D4FF;">82%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.82);"><span>Next target</span><span style="color:#5C6BC0;">Complete 1 focus session</span></div>
+            </div>
           </div>
         `
       },
