@@ -154,6 +154,8 @@
     .capture-btn { font-size: 15px; font-weight: 700; color: var(--obsidian-bg); background: var(--gold); border: none; padding: 14px 28px; border-radius: 999px; cursor: pointer; }
     .capture-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(212,175,55,0.25); }
     .capture-note { font-size: 13px; color: var(--text-muted); margin-top: 12px; }
+    .capture-consent { margin-top: 10px; display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-muted); }
+    .capture-consent input { margin-top: 2px; accent-color: var(--gold); }
     .capture-status { display: none; margin-top: 14px; padding: 12px; border-radius: 10px; font-size: 14px; }
     .capture-status.success { display: block; color: var(--green); background: rgba(0,245,160,0.08); border: 1px solid rgba(0,245,160,0.2); }
     .capture-status.error { display: block; color: #FF5F6D; background: rgba(255,95,109,0.08); border: 1px solid rgba(255,95,109,0.2); }
@@ -366,6 +368,10 @@
           <input type="email" id="emailInput" class="capture-input" placeholder="you@example.com" autocomplete="email" />
           <button class="capture-btn" id="joinButton">Join Waitlist</button>
         </div>
+        <label class="capture-consent">
+          <input type="checkbox" id="consentCheckbox" />
+          <span>I agree to receive waitlist and launch updates from Cognetra. I can unsubscribe anytime.</span>
+        </label>
         <p class="capture-note">One field only. No spam. No email selling. Ever. <span style="opacity:0.6">Stored securely — we'll only email launch updates.</span></p>
         <div class="capture-status" id="captureStatus"></div>
       </div>
@@ -427,15 +433,14 @@
 
   <script>
     // ============================================================
-    // WAITLIST — Submits to Formspree (or your endpoint)
+    // WAITLIST — Double opt-in via API
     // ============================================================
     const emailInput = document.getElementById('emailInput');
     const joinButton = document.getElementById('joinButton');
     const captureStatus = document.getElementById('captureStatus');
+    const consentCheckbox = document.getElementById('consentCheckbox');
     
-    // IMPORTANT: Replace this with your actual Formspree endpoint or API URL
-    // Get a free endpoint at https://formspree.io (1000 submissions/month free)
-    const WAITLIST_ENDPOINT = 'https://formspree.io/f/your-form-id';
+    const WAITLIST_ENDPOINT = '/api/waitlist/join';
     
     function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
@@ -446,6 +451,12 @@
         emailInput.style.borderColor = 'rgba(255,85,85,0.6)';
         emailInput.focus();
         setTimeout(() => { emailInput.style.borderColor = ''; }, 1200);
+        return;
+      }
+      if (!consentCheckbox.checked) {
+        captureStatus.className = 'capture-status error';
+        captureStatus.textContent = 'Please confirm consent to receive launch updates.';
+        consentCheckbox.focus();
         return;
       }
 
@@ -461,19 +472,22 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             email: email,
-            source: 'cognetra_landing_page',
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
+            consent: true,
+            consentVersion: 'waitlist_v1',
+            source: 'coming_soon_landing'
           })
         });
+        const data = await response.json().catch(() => ({}));
 
-        if (response.ok) {
-          document.querySelector('.capture-row').style.display = 'none';
-          captureStatus.className = 'capture-status success';
-          captureStatus.innerHTML = '✓ You\'re on the list! Check your inbox — we\'ll share launch updates and early access details soon.';
-        } else {
-          throw new Error('Submission failed');
+        if (!response.ok) {
+          throw new Error(data.error || 'Submission failed');
         }
+        document.querySelector('.capture-row').style.display = 'none';
+        consentCheckbox.closest('.capture-consent').style.display = 'none';
+        captureStatus.className = 'capture-status success';
+        captureStatus.innerHTML = data.status === 'already_confirmed'
+          ? '✓ This email is already confirmed on the waitlist.'
+          : '✓ Check your inbox to confirm your waitlist spot. We only activate your subscription after confirmation.';
       } catch (err) {
         captureStatus.className = 'capture-status error';
         captureStatus.innerHTML = '⚠ Something went wrong. Please try again or email us directly at <strong>hello@cognetra.app</strong>.';
@@ -484,6 +498,21 @@
 
     joinButton.addEventListener('click', submitWaitlist);
     emailInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitWaitlist(); });
+    
+    const waitlistState = new URLSearchParams(window.location.search).get('waitlist');
+    if (waitlistState) {
+      const stateMap = {
+        confirmed: ['success', '✓ Email confirmed. You are officially on the Cognetra waitlist.'],
+        'already-confirmed': ['success', '✓ This email is already confirmed on the waitlist.'],
+        invalid: ['error', '⚠ Confirmation link is invalid. Please request a new confirmation email.'],
+        expired: ['error', '⚠ Confirmation link expired. Submit your email again to receive a fresh link.']
+      };
+      if (stateMap[waitlistState]) {
+        captureStatus.className = `capture-status ${stateMap[waitlistState][0]}`;
+        captureStatus.textContent = stateMap[waitlistState][1];
+      }
+      history.replaceState({}, '', window.location.pathname);
+    }
 
     // ============================================================
     // PHONE MOCKUP — Animated tab cycling
