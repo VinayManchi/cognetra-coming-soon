@@ -75,7 +75,7 @@ module.exports = async function handler(req, res) {
         html: `
           <div style="margin:0;padding:24px;background:#F3F5F8;">
             <div style="font-family:Inter,Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
-              <div style="padding:20px 24px;background:linear-gradient(135deg,#0C1424,#13213D);color:#FFFFFF;">
+              <div style="padding:20px 24px;background:#0F1F3A;background-color:#0F1F3A;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.08);">
                 <div style="font-size:12px;letter-spacing:0.12em;opacity:0.85;text-transform:uppercase;">Cognetra</div>
                 <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;">You are confirmed</h1>
               </div>
