@@ -5,589 +5,397 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cognetra — The Neural Cockpit</title>
   <meta name="description" content="A privacy-first cognitive performance app. No accounts. No cloud. Just measurable clarity." />
-  <meta property="og:title" content="Cognetra — The Neural Cockpit" />
-  <meta property="og:description" content="A privacy-first cognitive performance app. No accounts. No cloud. Just measurable clarity." />
   <meta name="theme-color" content="#0A0A0C" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #0A0A0C;
-      --surface: #111114;
-      --gold: #D4AF37;
-      --gold-dim: rgba(212,175,55,0.15);
-      --gold-glow: rgba(212,175,55,0.06);
+      --surface: #131316;
+      --gold: #C9A84C;
+      --gold-soft: rgba(201,168,76,0.1);
+      --gold-border: rgba(201,168,76,0.18);
       --indigo: #5C6BC0;
-      --indigo-dim: rgba(92,107,192,0.12);
-      --cyan: #00D4FF;
-      --green: #00F5A0;
-      --muted: rgba(160,180,210,0.55);
-      --foreground: #E8EEFF;
-      --border: rgba(212,175,55,0.12);
+      --cyan: #00C8F0;
+      --green: #00E896;
+      --muted: rgba(180,190,210,0.5);
+      --muted-bright: rgba(180,190,210,0.72);
+      --fore: #ECF0FF;
+      --border: rgba(255,255,255,0.07);
     }
 
-    html { scroll-behavior: smooth; }
-
-    body {
+    html, body {
+      height: 100%;
       background: var(--bg);
-      color: var(--foreground);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
+      color: var(--fore);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* ── BACKGROUND ── */
-    .bg-canvas {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      overflow: hidden;
-    }
-
-    .bg-glow {
+    /* AMBIENT */
+    .ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .blob {
       position: absolute; border-radius: 50%;
-      filter: blur(140px); opacity: 0.7;
+      filter: blur(110px); will-change: transform;
     }
-    .bg-glow-1 {
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(92,107,192,0.12), transparent 70%);
-      top: -200px; right: -150px;
-      animation: floatA 18s ease-in-out infinite;
+    .b1 {
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(92,107,192,0.11) 0%, transparent 65%);
+      top: -160px; right: -100px;
+      animation: drift 20s ease-in-out infinite;
     }
-    .bg-glow-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(212,175,55,0.07), transparent 70%);
-      bottom: -100px; left: -100px;
-      animation: floatB 22s ease-in-out infinite;
+    .b2 {
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
+      bottom: -60px; left: -80px;
+      animation: drift 26s ease-in-out infinite reverse;
     }
-    .bg-glow-3 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(0,212,255,0.05), transparent 70%);
-      top: 40%; left: 40%;
-      animation: floatC 15s ease-in-out infinite;
+    .b3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,200,240,0.05) 0%, transparent 65%);
+      top: 45%; left: 48%;
+      animation: drift 17s ease-in-out infinite 4s;
     }
-
-    @keyframes floatA { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,40px)} }
-    @keyframes floatB { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,-30px)} }
-    @keyframes floatC { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,50px)} }
-
-    /* Noise texture */
-    .bg-canvas::after {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      opacity: 0.5;
+    @keyframes drift {
+      0%,100% { transform: translate(0,0); }
+      40% { transform: translate(-28px,18px); }
+      70% { transform: translate(18px,-22px); }
     }
 
-    /* ── LAYOUT ── */
-    .page {
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(10,10,12,0.88);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(140deg, #4A58B0, #6C5CE7);
+      display: grid; place-items: center; font-size: 14px;
+      box-shadow: 0 0 14px rgba(92,107,192,0.3);
+    }
+    .logo-text { font-size: 14px; font-weight: 600; color: var(--fore); letter-spacing: -0.2px; }
+    .badge {
+      font-size: 10px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gold);
+      background: var(--gold-soft); border: 1px solid var(--gold-border);
+      padding: 4px 12px; border-radius: 20px;
+    }
+
+    /* MAIN */
+    main {
       position: relative; z-index: 1;
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 60px 24px;
+      padding: 78px 24px 90px;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
-      background: rgba(10,10,12,0.7);
-    }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      font-family: 'Syne', sans-serif;
-      font-size: 18px; font-weight: 700;
-      color: var(--foreground); text-decoration: none;
-      letter-spacing: -0.3px;
-    }
-
-    .nav-logo-mark {
-      width: 32px; height: 32px; border-radius: 9px;
-      background: linear-gradient(135deg, #5C6BC0 0%, #7C6CF8 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-      box-shadow: 0 0 20px rgba(92,107,192,0.3);
-    }
-
-    .nav-pill {
-      background: var(--gold-dim);
-      border: 1px solid var(--border);
-      color: var(--gold);
-      font-size: 11px; font-weight: 500;
-      padding: 6px 14px; border-radius: 100px;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── ORB ── */
+    /* ORB */
     .orb-wrap {
-      position: relative;
-      width: 180px; height: 180px;
+      position: relative; width: 144px; height: 144px;
       margin-bottom: 48px;
-      animation: fadeUp 1s ease both;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) both;
     }
-
-    .orb-svg { width: 180px; height: 180px; }
-
-    .orb-bg-circle {
-      fill: #0D1628;
-      filter: drop-shadow(0 0 30px rgba(0,212,255,0.15));
+    .pulse-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(0,200,240,0.07);
     }
-    .orb-ring-track { fill: none; stroke: rgba(0,212,255,0.08); stroke-width: 1.5; }
-    .orb-ring-progress {
+    .pr1 { inset: -14px; animation: pr 4s ease-in-out infinite; }
+    .pr2 { inset: -28px; animation: pr 4s ease-in-out infinite 1.4s; }
+    @keyframes pr { 0%,100%{opacity:0.4;transform:scale(1)} 50%{opacity:1;transform:scale(1.015)} }
+
+    svg.orb { width: 144px; height: 144px; display: block; }
+    .ot { fill: none; stroke: rgba(0,200,240,0.07); stroke-width: 1.5; }
+    .oa {
       fill: none; stroke: var(--cyan); stroke-width: 2;
-      stroke-linecap: round;
-      stroke-dasharray: 502; stroke-dashoffset: 140;
-      transform-origin: 90px 90px;
-      animation: spinOrb 14s linear infinite;
-      filter: drop-shadow(0 0 6px rgba(0,212,255,0.5));
+      stroke-linecap: round; stroke-dasharray: 402; stroke-dashoffset: 105;
+      transform-origin: 72px 72px;
+      animation: spin 16s linear infinite;
+      filter: drop-shadow(0 0 4px rgba(0,200,240,0.35));
     }
-    .orb-inner-ring {
-      fill: none; stroke: rgba(92,107,192,0.2); stroke-width: 1;
-      stroke-dasharray: 4 8;
-      transform-origin: 90px 90px;
-      animation: spinOrb 20s linear infinite reverse;
+    .oi {
+      fill: none; stroke: rgba(92,107,192,0.15); stroke-width: 1;
+      stroke-dasharray: 3 8; transform-origin: 72px 72px;
+      animation: spin 22s linear infinite reverse;
     }
-    .orb-core { fill: #060B18; }
-    .orb-breath {
-      fill: rgba(0,212,255,0.03);
-      transform-origin: 90px 90px;
-      animation: breatheOrb 4s ease-in-out infinite;
-    }
+    .of { fill: #0C0E1A; }
+    .ob { fill: rgba(0,200,240,0.025); transform-origin: 72px 72px; animation: breathe 4s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.018)} }
 
-    @keyframes spinOrb { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-    @keyframes breatheOrb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.025)} }
-
-    .orb-center-text {
+    .orb-info {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 2px;
+      align-items: center; justify-content: center; gap: 2px;
     }
-
-    .orb-pct {
-      font-family: 'DM Mono', monospace;
-      font-size: 36px; font-weight: 500;
-      color: var(--foreground);
-      letter-spacing: -2px;
-      line-height: 1;
+    .on {
+      font-size: 30px; font-weight: 300;
+      letter-spacing: -1.5px; line-height: 1;
+      color: var(--fore); font-variant-numeric: tabular-nums;
     }
-
-    .orb-label {
-      font-size: 8px; font-weight: 400;
-      color: var(--muted);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+    .om {
+      font-size: 7px; font-weight: 500;
+      letter-spacing: 1.3px; text-transform: uppercase; color: var(--muted);
     }
-
-    .orb-state {
-      font-size: 8px; font-weight: 500;
-      color: var(--cyan);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      animation: statePulse 3s ease-in-out infinite;
+    .os {
+      font-size: 7.5px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan);
+      animation: sp 3s ease-in-out infinite;
     }
+    @keyframes sp { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    @keyframes statePulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    /* COPY */
+    .copy { text-align: center; max-width: 500px; margin-bottom: 36px; }
 
-    /* Orb pulse rings */
-    .orb-pulse {
-      position: absolute; inset: -20px;
-      border-radius: 50%;
-      border: 1px solid rgba(0,212,255,0.06);
-      animation: pulseRing 3s ease-out infinite;
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 10px; font-weight: 500; letter-spacing: 1.3px;
+      text-transform: uppercase; color: var(--gold);
+      background: var(--gold-soft); border: 1px solid var(--gold-border);
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 22px;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
     }
-    .orb-pulse-2 {
-      position: absolute; inset: -40px;
-      border-radius: 50%;
-      border: 1px solid rgba(0,212,255,0.03);
-      animation: pulseRing 3s ease-out infinite 1s;
-    }
-
-    @keyframes pulseRing {
-      0% { transform: scale(0.95); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: scale(1.05); opacity: 0; }
-    }
-
-    /* ── HERO COPY ── */
-    .hero { text-align: center; max-width: 640px; }
-
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--gold-dim);
-      border: 1px solid var(--border);
-      color: var(--gold);
-      font-size: 10px; font-weight: 500;
-      letter-spacing: 2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 100px;
-      margin-bottom: 28px;
-      animation: fadeUp 0.8s ease 0.1s both;
-    }
-
-    .eyebrow-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--gold);
-      animation: dotPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+    .td { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: td 2s ease-in-out infinite; }
+    @keyframes td { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
     h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(42px, 7vw, 72px);
-      font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -2.5px;
-      color: var(--foreground);
-      margin-bottom: 20px;
-      animation: fadeUp 0.8s ease 0.2s both;
+      font-size: clamp(32px, 4.8vw, 52px);
+      font-weight: 300; line-height: 1.12;
+      letter-spacing: -1.2px; color: var(--fore);
+      margin-bottom: 16px;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both;
+    }
+    h1 b { font-weight: 600; }
+    h1 .ac { color: var(--gold); font-weight: 600; }
+
+    .sub {
+      font-size: 15px; font-weight: 300; line-height: 1.72;
+      color: var(--muted-bright); max-width: 390px; margin: 0 auto;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
     }
 
-    h1 em {
-      font-style: normal;
-      color: var(--gold);
+    /* FORM */
+    .form-box {
+      width: 100%; max-width: 400px;
+      margin-bottom: 28px;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
     }
-
-    .subtitle {
-      font-size: clamp(15px, 2vw, 18px);
-      font-weight: 300;
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 480px;
-      margin: 0 auto 40px;
-      animation: fadeUp 0.8s ease 0.3s both;
+    .form-lbl {
+      display: block; text-align: center;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
     }
-
-    /* ── EMAIL FORM ── */
-    .form-wrap {
-      animation: fadeUp 0.8s ease 0.4s both;
-      margin-bottom: 40px;
+    .input-wrap {
+      display: flex;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 11px; padding: 5px 5px 5px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-
-    .form-label {
-      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 12px; display: block;
+    .input-wrap:focus-within {
+      border-color: var(--gold-border);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.05);
     }
-
-    .form-row {
-      display: flex; gap: 8px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 6px 6px 6px 20px;
-      transition: border-color 0.3s;
-      max-width: 440px;
-      margin: 0 auto;
+    .ei {
+      flex: 1; min-width: 0; background: none; border: none; outline: none;
+      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400;
+      color: var(--fore);
     }
-
-    .form-row:focus-within {
-      border-color: rgba(212,175,55,0.35);
-      background: rgba(255,255,255,0.05);
-    }
-
-    .form-input {
-      flex: 1; background: none; border: none; outline: none;
-      color: var(--foreground);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 400;
-      min-width: 0;
-    }
-
-    .form-input::placeholder { color: rgba(160,180,210,0.35); }
-
-    .form-btn {
-      background: var(--gold);
-      color: #0A0A0C;
+    .ei::placeholder { color: rgba(180,190,210,0.28); }
+    .nb {
+      flex-shrink: 0; background: var(--gold); color: #0A0A0C;
       border: none; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px; font-weight: 600;
-      padding: 10px 22px; border-radius: 10px;
-      transition: all 0.2s; white-space: nowrap;
-      letter-spacing: -0.2px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      padding: 8px 18px; border-radius: 7px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .nb:hover { opacity: 0.88; }
+    .nb:active { transform: scale(0.97); }
+    .fc {
+      font-size: 11px; color: var(--muted);
+      text-align: center; margin-top: 8px;
+    }
+    .success {
+      display: none; text-align: center;
+      background: rgba(0,232,150,0.07);
+      border: 1px solid rgba(0,232,150,0.16);
+      border-radius: 11px; padding: 14px;
+      font-size: 13px; color: var(--green);
     }
 
-    .form-btn:hover { background: #e0be52; transform: scale(1.02); }
-    .form-btn:active { transform: scale(0.98); }
-
-    .form-note {
-      font-size: 11px; color: rgba(160,180,210,0.35);
-      margin-top: 10px; letter-spacing: 0.2px;
+    /* CHIPS */
+    .chips {
+      display: flex; flex-wrap: wrap; gap: 7px; justify-content: center;
+      margin-bottom: 40px;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+    }
+    .chip {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); font-size: 11px; font-weight: 400;
+      padding: 5px 12px; border-radius: 20px;
     }
 
-    .success-msg {
-      display: none;
-      background: rgba(0,245,160,0.08);
-      border: 1px solid rgba(0,245,160,0.2);
-      color: var(--green);
-      font-size: 13px; font-weight: 500;
-      padding: 12px 24px; border-radius: 12px;
-      max-width: 440px; margin: 0 auto;
-      text-align: center;
+    /* STATS */
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--border); border: 1px solid var(--border);
+      border-radius: 13px; overflow: hidden; gap: 1px;
+      max-width: 380px; width: 100%;
+      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both;
     }
-
-    /* ── TRUST PILLS ── */
-    .trust-row {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center;
-      animation: fadeUp 0.8s ease 0.5s both;
-      margin-bottom: 60px;
+    .sc { background: var(--surface); padding: 16px 10px; text-align: center; }
+    .sv {
+      display: block; font-size: 19px; font-weight: 500;
+      letter-spacing: -0.5px; color: var(--gold);
+      line-height: 1; margin-bottom: 5px;
     }
+    .sk { font-size: 9px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); }
 
-    .trust-pill {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      color: var(--muted);
-      font-size: 11px; font-weight: 400;
-      padding: 6px 14px; border-radius: 100px;
-      letter-spacing: 0.2px;
-    }
-
-    .trust-pill span { font-size: 12px; }
-
-    /* ── STATS ── */
-    .stats-row {
-      display: flex; gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      animation: fadeUp 0.8s ease 0.6s both;
-      max-width: 480px;
-      width: 100%;
-    }
-
-    .stat {
-      flex: 1;
-      background: var(--surface);
-      padding: 20px 16px;
-      text-align: center;
-    }
-
-    .stat-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 22px; font-weight: 500;
-      color: var(--gold);
-      display: block; line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 10px; color: var(--muted);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       position: fixed; bottom: 0; left: 0; right: 0;
-      padding: 16px 48px;
+      height: 46px;
       display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 0 48px;
+      background: rgba(10,10,12,0.88);
       backdrop-filter: blur(20px);
-      background: rgba(10,10,12,0.7);
-      font-size: 11px; color: rgba(160,180,210,0.35);
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--muted);
+    }
+    .fl { display: flex; align-items: center; gap: 6px; color: rgba(0,232,150,0.5); }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .footer-lock {
-      display: flex; align-items: center; gap: 6px;
-      color: rgba(0,245,160,0.5);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── MOBILE ── */
-    @media (max-width: 600px) {
-      nav { padding: 16px 20px; }
-      nav .nav-pill { display: none; }
-      .page { padding: 100px 20px 80px; }
-      .orb-wrap { width: 140px; height: 140px; margin-bottom: 36px; }
-      .orb-svg { width: 140px; height: 140px; }
-      .orb-pct { font-size: 28px; }
-      h1 { letter-spacing: -1.5px; }
-      .form-row { flex-direction: column; padding: 10px; gap: 8px; }
-      .form-input { padding: 8px 10px; }
-      .form-btn { width: 100%; padding: 12px; }
-      footer { padding: 12px 20px; flex-direction: column; gap: 6px; text-align: center; }
-      .stats-row { gap: 1px; }
-      .stat { padding: 16px 10px; }
-      .stat-num { font-size: 18px; }
+    @media (max-width: 520px) {
+      nav { padding: 0 20px; }
+      .badge { display: none; }
+      main { padding: 68px 20px 72px; }
+      h1 { font-size: 30px; letter-spacing: -0.8px; }
+      .stats { grid-template-columns: repeat(2,1fr); max-width: 260px; }
+      footer { padding: 0 20px; }
+      .fc-copy { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-canvas">
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
-    <div class="bg-glow bg-glow-3"></div>
+<div class="ambient">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-mark">🧠</div>
+    <span class="logo-text">Cognetra</span>
+  </a>
+  <div class="badge">Coming Soon</div>
+</nav>
+
+<main>
+
+  <!-- Orb -->
+  <div class="orb-wrap">
+    <div class="pulse-ring pr1"></div>
+    <div class="pulse-ring pr2"></div>
+    <svg class="orb" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg">
+      <circle class="ob" cx="72" cy="72" r="66"/>
+      <circle class="of" cx="72" cy="72" r="60"/>
+      <circle class="ot" cx="72" cy="72" r="64"/>
+      <circle class="oa" cx="72" cy="72" r="64" transform="rotate(-90 72 72)"/>
+      <circle class="oi" cx="72" cy="72" r="52"/>
+    </svg>
+    <div class="orb-info">
+      <div class="on" id="orbN">87%</div>
+      <div class="om">Processing Eff.</div>
+      <div class="os">● Relaxed</div>
+    </div>
   </div>
 
-  <nav>
-    <a class="nav-logo" href="#">
-      <div class="nav-logo-mark">🧠</div>
-      Cognetra
-    </a>
-    <div class="nav-pill">Coming Soon</div>
-  </nav>
+  <!-- Copy -->
+  <div class="copy">
+    <div class="tag-pill"><span class="td"></span>The Neural Cockpit · Launching Soon</div>
+    <h1>Train your brain.<br><span class="ac">Own your data.</span></h1>
+    <p class="sub">A privacy-first cognitive performance app built on peer-reviewed science. No accounts. No cloud. Just measurable clarity.</p>
+  </div>
 
-  <main class="page">
-
-    <!-- Orb -->
-    <div class="orb-wrap">
-      <div class="orb-pulse"></div>
-      <div class="orb-pulse-2"></div>
-      <svg class="orb-svg" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
-        <circle class="orb-breath" cx="90" cy="90" r="82"/>
-        <circle class="orb-bg-circle" cx="90" cy="90" r="75"/>
-        <circle class="orb-ring-track" cx="90" cy="90" r="80"/>
-        <circle class="orb-ring-progress" cx="90" cy="90" r="80" transform="rotate(-90 90 90)"/>
-        <circle class="orb-inner-ring" cx="90" cy="90" r="65"/>
-        <circle class="orb-core" cx="90" cy="90" r="58"/>
-      </svg>
-      <div class="orb-center-text">
-        <div class="orb-pct" id="orbPct">87%</div>
-        <div class="orb-label">Processing Eff.</div>
-        <div class="orb-state">● RELAXED</div>
-      </div>
+  <!-- Form -->
+  <div class="form-box">
+    <label class="form-lbl" for="ei">Get early access + Founder's Circle invite</label>
+    <div class="input-wrap" id="iw">
+      <input class="ei" id="ei" type="email" placeholder="your@email.com" autocomplete="email" />
+      <button class="nb" onclick="go()">Notify Me →</button>
     </div>
+    <div class="success" id="suc">🧠 You're on the list. We'll be in touch.</div>
+    <p class="fc">No spam. Your email is never sold or shared.</p>
+  </div>
 
-    <!-- Hero -->
-    <div class="hero">
-      <div class="eyebrow">
-        <span class="eyebrow-dot"></span>
-        The Neural Cockpit · Launching Soon
-      </div>
+  <!-- Chips -->
+  <div class="chips">
+    <div class="chip">🔒 No account required</div>
+    <div class="chip">🔬 ACTIVE Trial Protocol</div>
+    <div class="chip">👁️ UFOV Research-Aligned</div>
+    <div class="chip">📱 iOS & Android</div>
+  </div>
 
-      <h1>Train your brain.<br><em>Own your data.</em></h1>
+  <!-- Stats -->
+  <div class="stats">
+    <div class="sc"><span class="sv">11</span><span class="sk">Exercises</span></div>
+    <div class="sc"><span class="sv">5</span><span class="sk">Domains</span></div>
+    <div class="sc"><span class="sv">100%</span><span class="sk">On-device</span></div>
+    <div class="sc"><span class="sv">0</span><span class="sk">Accounts</span></div>
+  </div>
 
-      <p class="subtitle">
-        A privacy-first cognitive performance app built on peer-reviewed science.
-        No accounts. No cloud. Just measurable clarity — private to your device.
-      </p>
+</main>
 
-      <!-- Email form -->
-      <div class="form-wrap">
-        <label class="form-label" for="emailInput">Get early access + Founder's Circle invite</label>
-        <div class="form-row" id="formRow">
-          <input
-            class="form-input"
-            id="emailInput"
-            type="email"
-            placeholder="your@email.com"
-            autocomplete="email"
-          />
-          <button class="form-btn" onclick="handleSubmit()">Notify Me →</button>
-        </div>
-        <div class="success-msg" id="successMsg">
-          🧠 You're on the list. We'll be in touch soon.
-        </div>
-        <p class="form-note">No spam. Unsubscribe anytime. Your email is never sold.</p>
-      </div>
+<footer>
+  <div class="fl">🔒 Brain data never leaves your device</div>
+  <div class="fc-copy">© 2025 Cognetra · No accounts. No cloud. Just clarity.</div>
+</footer>
 
-      <!-- Trust pills -->
-      <div class="trust-row">
-        <div class="trust-pill"><span>🔒</span> No account required</div>
-        <div class="trust-pill"><span>🔬</span> ACTIVE Trial Protocol</div>
-        <div class="trust-pill"><span>👁️</span> UFOV Research-Aligned</div>
-        <div class="trust-pill"><span>📱</span> iOS & Android</div>
-      </div>
+<script>
+  const seq = [87,79,93,84,91,76,88,95];
+  let si = 0;
+  const el = document.getElementById('orbN');
+  function to(t) {
+    const f = parseInt(el.textContent);
+    const d = t - f, n = 32; let s = 0;
+    const r = setInterval(() => {
+      s++; el.textContent = Math.round(f + d*(s/n)) + '%';
+      if (s >= n) { clearInterval(r); el.textContent = t + '%'; }
+    }, 26);
+  }
+  setInterval(() => { si = (si+1)%seq.length; to(seq[si]); }, 3600);
 
-      <!-- Stats -->
-      <div class="stats-row">
-        <div class="stat">
-          <span class="stat-num">11</span>
-          <span class="stat-label">Exercises</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">5</span>
-          <span class="stat-label">Domains</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">100%</span>
-          <span class="stat-label">On-device</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">0</span>
-          <span class="stat-label">Accounts</span>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <footer>
-    <div class="footer-lock">
-      <span>🔒</span>
-      Your brain data never leaves this device
-    </div>
-    <div>© 2025 Cognetra. No accounts. No cloud. Just clarity.</div>
-  </footer>
-
-  <script>
-    // Animated orb percentage counter
-    const targets = [72, 81, 87, 94, 78, 85];
-    let idx = 0;
-    const orbPct = document.getElementById('orbPct');
-
-    function animateTo(target) {
-      const current = parseInt(orbPct.textContent);
-      const diff = target - current;
-      const steps = 40;
-      let step = 0;
-      const timer = setInterval(() => {
-        step++;
-        const val = Math.round(current + (diff * step / steps));
-        orbPct.textContent = val + '%';
-        if (step >= steps) {
-          clearInterval(timer);
-          orbPct.textContent = target + '%';
-        }
-      }, 30);
+  function go() {
+    const v = document.getElementById('ei').value.trim();
+    const iw = document.getElementById('iw');
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      iw.style.borderColor = 'rgba(255,70,70,0.4)';
+      setTimeout(() => iw.style.borderColor = '', 1500);
+      return;
     }
-
-    setInterval(() => {
-      idx = (idx + 1) % targets.length;
-      animateTo(targets[idx]);
-    }, 4000);
-
-    // Email form
-    function handleSubmit() {
-      const email = document.getElementById('emailInput').value;
-      const formRow = document.getElementById('formRow');
-      const successMsg = document.getElementById('successMsg');
-
-      if (!email || !email.includes('@')) {
-        document.getElementById('emailInput').style.borderColor = 'rgba(255,90,90,0.5)';
-        setTimeout(() => {
-          document.getElementById('emailInput').style.borderColor = '';
-        }, 1500);
-        return;
-      }
-
-      formRow.style.display = 'none';
-      successMsg.style.display = 'block';
-
-      // Store email locally (replace with your backend endpoint)
-      console.log('Waitlist signup:', email);
-    }
-
-    // Enter key submits
-    document.getElementById('emailInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') handleSubmit();
-    });
-  </script>
-
+    iw.style.display = 'none';
+    document.getElementById('suc').style.display = 'block';
+    document.querySelector('.fc').style.display = 'none';
+    console.log('Waitlist signup:', v);
+  }
+  document.getElementById('ei').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
+</script>
 </body>
 </html>
