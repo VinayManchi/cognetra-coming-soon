@@ -470,9 +470,11 @@
     const WAITLIST_ENDPOINT = '/api/waitlist/join';
     const TURNSTILE_SITE_KEY = '0x4AAAAAADG8CUznYKl4stcM';
     let turnstileToken = '';
+    let turnstileWidgetId = null;
     
-    if (TURNSTILE_SITE_KEY && window.turnstile && turnstileWrap) {
-      window.turnstile.render(turnstileWrap, {
+    function initTurnstile() {
+      if (!TURNSTILE_SITE_KEY || !turnstileWrap || !window.turnstile || turnstileWidgetId !== null) return;
+      turnstileWidgetId = window.turnstile.render(turnstileWrap, {
         sitekey: TURNSTILE_SITE_KEY,
         theme: 'dark',
         callback: (token) => { turnstileToken = token; },
@@ -480,6 +482,9 @@
         'expired-callback': () => { turnstileToken = ''; }
       });
     }
+    initTurnstile();
+    window.addEventListener('load', initTurnstile);
+    setTimeout(initTurnstile, 300);
     
     function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
@@ -499,6 +504,7 @@
         return;
       }
       if (TURNSTILE_SITE_KEY && !turnstileToken) {
+        initTurnstile();
         captureStatus.className = 'capture-status error';
         captureStatus.textContent = 'Please complete the security check and try again.';
         return;
