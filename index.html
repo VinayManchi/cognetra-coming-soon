@@ -94,9 +94,10 @@
     .header-cta {
       font-size: 13px; font-weight: 600; color: var(--obsidian-bg);
       background: var(--gold); border: none; padding: 10px 20px;
-      border-radius: 999px; cursor: pointer; transition: all 240ms ease;
+      border-radius: 999px; cursor: pointer; transition: all 240ms ease; text-decoration: none;
     }
     .header-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,175,55,0.3); }
+    .header-cta:visited, .header-cta:active, .header-cta:focus { text-decoration: none; color: var(--obsidian-bg); }
 
     /* Hero */
     .hero { padding: 80px 0 60px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; min-height: calc(100vh - 220px); }
@@ -265,8 +266,25 @@
     .tab-nav button.active { color: var(--obsidian-bg); background: var(--gold); box-shadow: 0 4px 14px rgba(212,175,55,0.25); }
     .tab-content-panel { background: var(--obsidian-surface); border: 1px solid var(--border-visible); border-radius: var(--radius-lg); padding: 28px; min-height: 200px; }
     .tab-content-panel h3 { font-size: 20px; font-weight: 700; margin-bottom: 18px; }
-    .tab-points { display: grid; gap: 8px; }
-    .tab-points li { font-size: 14px; color: var(--text-secondary); list-style: none; padding: 12px 16px; background: var(--obsidian-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
+    .info-slider { position: relative; }
+    .info-slide {
+      display: none;
+      background: var(--obsidian-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      min-height: 116px;
+    }
+    .info-slide.active { display: block; }
+    .info-slide-kicker { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px; }
+    .info-slide-title { font-size: 17px; line-height: 1.35; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .info-slide-body { font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+    .info-dots { margin-top: 12px; display: flex; gap: 8px; justify-content: center; }
+    .info-dot {
+      width: 8px; height: 8px; border-radius: 999px; border: none; cursor: pointer;
+      background: rgba(189,199,223,0.3); transition: all 150ms ease;
+    }
+    .info-dot.active { width: 22px; background: var(--gold); }
 
     /* What */
     .what-section { margin: 60px 0; }
@@ -319,7 +337,10 @@
       .tab-nav button { min-width: 100px; font-size: 12px; padding: 10px 12px; }
       .tab-content-panel { padding: 18px; min-height: 0; }
       .tab-content-panel h3 { font-size: 18px; margin-bottom: 12px; }
-      .tab-points li { font-size: 13px; padding: 10px 12px; }
+      .info-slide { min-height: 108px; padding: 14px; }
+      .info-slide-kicker { font-size: 10px; }
+      .info-slide-title { font-size: 15px; margin-bottom: 6px; }
+      .info-slide-body { font-size: 13px; }
       .what-section h2, .helps-section h2, .tabs-section h2 { font-size: 26px; margin-bottom: 16px; }
       .what-card, .help-card { padding: 16px; }
       footer { margin-top: 36px; padding: 24px 0; }
@@ -842,18 +863,79 @@
 
     const tabNav = document.getElementById('tabNav');
     const tabContent = document.getElementById('tabContent');
+    const infoSlideState = {};
+    let currentInfoTab = 'today';
+    let infoAutoTimer = null;
+    let isHoveringInfoPanel = false;
+
+    function splitPoint(point) {
+      if (point.includes('—')) {
+        const [title, ...rest] = point.split('—');
+        return { title: title.trim(), body: rest.join('—').trim() };
+      }
+      if (point.includes(':')) {
+        const idx = point.indexOf(':');
+        return { title: point.slice(0, idx).trim(), body: point.slice(idx + 1).trim() };
+      }
+      return { title: point.trim(), body: '' };
+    }
+
+    function renderInfoSlides(key) {
+      const t = infoTabs[key];
+      const currentIdx = infoSlideState[key] || 0;
+      const slides = t.points.map((p, i) => {
+        const parsed = splitPoint(p);
+        return `
+          <article class="info-slide${i === currentIdx ? ' active' : ''}" data-slide-idx="${i}">
+            <div class="info-slide-kicker">Feature ${i + 1} of ${t.points.length}</div>
+            <div class="info-slide-title">${parsed.title}</div>
+            ${parsed.body ? `<div class="info-slide-body">${parsed.body}</div>` : ''}
+          </article>
+        `;
+      }).join('');
+
+      const dots = t.points.map((_, i) => `<button class="info-dot${i === currentIdx ? ' active' : ''}" data-dot-idx="${i}" aria-label="View slide ${i + 1}"></button>`).join('');
+      tabContent.innerHTML = `<h3>${t.title}</h3><div class="info-slider" data-info-key="${key}">${slides}<div class="info-dots">${dots}</div></div>`;
+    }
 
     function renderInfoTab(key) {
-      const t = infoTabs[key];
+      currentInfoTab = key;
       tabContent.style.opacity = '0';
       setTimeout(() => {
-        tabContent.innerHTML = `<h3>${t.title}</h3><ul class="tab-points">${t.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+        renderInfoSlides(key);
         tabContent.style.opacity = '1';
       }, 160);
       tabNav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.tab === key));
+      restartInfoAutoCycle();
+    }
+
+    function setInfoSlide(key, idx) {
+      const points = infoTabs[key].points;
+      infoSlideState[key] = (idx + points.length) % points.length;
+      renderInfoSlides(key);
+    }
+
+    function restartInfoAutoCycle() {
+      if (infoAutoTimer) clearInterval(infoAutoTimer);
+      if (isHoveringInfoPanel) return;
+      infoAutoTimer = setInterval(() => {
+        const idx = infoSlideState[currentInfoTab] || 0;
+        setInfoSlide(currentInfoTab, idx + 1);
+      }, 3200);
     }
 
     tabNav.addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') renderInfoTab(e.target.dataset.tab); });
+    tabContent.addEventListener('click', (e) => {
+      const dot = e.target.closest('.info-dot');
+      if (!dot) return;
+      const idx = parseInt(dot.dataset.dotIdx, 10);
+      if (Number.isNaN(idx)) return;
+      setInfoSlide(currentInfoTab, idx);
+      restartInfoAutoCycle();
+    });
+    tabContent.addEventListener('mouseenter', () => { isHoveringInfoPanel = true; if (infoAutoTimer) clearInterval(infoAutoTimer); });
+    tabContent.addEventListener('mouseleave', () => { isHoveringInfoPanel = false; restartInfoAutoCycle(); });
+
     renderInfoTab('today');
   </script>
 </body>
