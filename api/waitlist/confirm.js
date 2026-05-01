@@ -108,7 +108,7 @@ module.exports = async function handler(req, res) {
                   </tr>
                 </table>
                 <p style="margin:0;">
-                  <a href="${unsubscribeUrl}" style="display:inline-block;min-height:40px;padding:10px 16px;background:#0C1220;color:#D7E0F6;text-decoration:none;border:1px solid rgba(189,199,223,0.35);border-radius:999px;font-weight:600;font-size:13px;line-height:1.2;">Manage email preferences</a>
+                  <a href="${unsubscribeUrl}" style="display:inline-block;padding:10px 14px;background:#0C1220;color:#D7E0F6;text-decoration:none;border:1px solid rgba(189,199,223,0.35);border-radius:999px;font-weight:600;font-size:12px;line-height:1;white-space:nowrap;">Unsubscribe</a>
                 </p>
               </div>
               <div style="padding:14px 24px;border-top:1px solid rgba(255,255,255,0.08);background:#0A0A0C;color:#8F9AB5;font-size:12px;line-height:1.55;">
