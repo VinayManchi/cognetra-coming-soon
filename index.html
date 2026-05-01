@@ -1,401 +1,1482 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cognetra — The Neural Cockpit</title>
-  <meta name="description" content="A privacy-first cognitive performance app. No accounts. No cloud. Just measurable clarity." />
+  <title>Cognetra — The Cognitive Cockpit. Private by Design.</title>
+  <meta name="description" content="Cognetra is a privacy-first cognitive training app built on peer-reviewed protocols. No cloud. No sign-in. Just measurable clarity — private to your device. Join the Founder's Circle waitlist." />
   <meta name="theme-color" content="#0A0A0C" />
+  <meta property="og:title" content="Cognetra — Train your brain. Own your data." />
+  <meta property="og:description" content="The cognitive cockpit built on peer-reviewed science. No account required. 11 exercises across 5 cognitive domains. Join the waitlist." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0A0A0C;
-      --surface: #131316;
-      --gold: #C9A84C;
-      --gold-soft: rgba(201,168,76,0.1);
-      --gold-border: rgba(201,168,76,0.18);
+      --obsidian-bg: #0A0A0C;
+      --obsidian-surface: #0C0C12;
+      --obsidian-elevated: #12121A;
+      --obsidian-card: #161622;
+      --gold: #D4AF37;
+      --gold-dim: rgba(212, 175, 55, 0.06);
+      --gold-soft: rgba(212, 175, 55, 0.12);
+      --gold-border: rgba(212, 175, 55, 0.22);
+      --gold-text: rgba(212, 175, 55, 0.90);
+      --gold-glow: rgba(212, 175, 55, 0.18);
       --indigo: #5C6BC0;
-      --cyan: #00C8F0;
-      --green: #00E896;
-      --muted: rgba(180,190,210,0.5);
-      --muted-bright: rgba(180,190,210,0.72);
-      --fore: #ECF0FF;
-      --border: rgba(255,255,255,0.07);
+      --indigo-glow: rgba(92, 107, 192, 0.12);
+      --cyan: #00D4FF;
+      --cyan-glow: rgba(0, 212, 255, 0.10);
+      --green: #00F5A0;
+      --text-primary: #EEF2FF;
+      --text-secondary: rgba(189, 199, 223, 0.78);
+      --text-muted: rgba(189, 199, 223, 0.48);
+      --border-subtle: rgba(255, 255, 255, 0.05);
+      --border-visible: rgba(255, 255, 255, 0.09);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-xl: 28px;
+      --max-width: 1120px;
+      --transition-smooth: 240ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--fore);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html {
+      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    body {
+      background: var(--obsidian-bg);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* AMBIENT */
-    .ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .blob {
-      position: absolute; border-radius: 50%;
-      filter: blur(110px); will-change: transform;
-    }
-    .b1 {
-      width: 560px; height: 560px;
-      background: radial-gradient(circle, rgba(92,107,192,0.11) 0%, transparent 65%);
-      top: -160px; right: -100px;
-      animation: drift 20s ease-in-out infinite;
-    }
-    .b2 {
-      width: 420px; height: 420px;
-      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
-      bottom: -60px; left: -80px;
-      animation: drift 26s ease-in-out infinite reverse;
-    }
-    .b3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,200,240,0.05) 0%, transparent 65%);
-      top: 45%; left: 48%;
-      animation: drift 17s ease-in-out infinite 4s;
-    }
-    @keyframes drift {
-      0%,100% { transform: translate(0,0); }
-      40% { transform: translate(-28px,18px); }
-      70% { transform: translate(18px,-22px); }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 15%, var(--indigo-glow), transparent),
+        radial-gradient(ellipse 60% 80% at 85% 80%, var(--gold-dim), transparent),
+        radial-gradient(ellipse 40% 50% at 50% 50%, rgba(0, 212, 255, 0.04), transparent);
     }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      height: 58px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px;
-      background: rgba(10,10,12,0.88);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-    .logo-mark {
-      width: 28px; height: 28px; border-radius: 7px;
-      background: linear-gradient(140deg, #4A58B0, #6C5CE7);
-      display: grid; place-items: center; font-size: 14px;
-      box-shadow: 0 0 14px rgba(92,107,192,0.3);
-    }
-    .logo-text { font-size: 14px; font-weight: 600; color: var(--fore); letter-spacing: -0.2px; }
-    .badge {
-      font-size: 10px; font-weight: 500; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--gold);
-      background: var(--gold-soft); border: 1px solid var(--gold-border);
-      padding: 4px 12px; border-radius: 20px;
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
     }
 
-    /* MAIN */
-    main {
-      position: relative; z-index: 1;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 78px 24px 90px;
+    header, main, footer { position: relative; z-index: 2; }
+
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 28px; }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(10, 10, 12, 0.78);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    /* ORB */
-    .orb-wrap {
-      position: relative; width: 144px; height: 144px;
-      margin-bottom: 48px;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) both;
-    }
-    .pulse-ring {
-      position: absolute; border-radius: 50%;
-      border: 1px solid rgba(0,200,240,0.07);
-    }
-    .pr1 { inset: -14px; animation: pr 4s ease-in-out infinite; }
-    .pr2 { inset: -28px; animation: pr 4s ease-in-out infinite 1.4s; }
-    @keyframes pr { 0%,100%{opacity:0.4;transform:scale(1)} 50%{opacity:1;transform:scale(1.015)} }
-
-    svg.orb { width: 144px; height: 144px; display: block; }
-    .ot { fill: none; stroke: rgba(0,200,240,0.07); stroke-width: 1.5; }
-    .oa {
-      fill: none; stroke: var(--cyan); stroke-width: 2;
-      stroke-linecap: round; stroke-dasharray: 402; stroke-dashoffset: 105;
-      transform-origin: 72px 72px;
-      animation: spin 16s linear infinite;
-      filter: drop-shadow(0 0 4px rgba(0,200,240,0.35));
-    }
-    .oi {
-      fill: none; stroke: rgba(92,107,192,0.15); stroke-width: 1;
-      stroke-dasharray: 3 8; transform-origin: 72px 72px;
-      animation: spin 22s linear infinite reverse;
-    }
-    .of { fill: #0C0E1A; }
-    .ob { fill: rgba(0,200,240,0.025); transform-origin: 72px 72px; animation: breathe 4s ease-in-out infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.018)} }
-
-    .orb-info {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2px;
-    }
-    .on {
-      font-size: 30px; font-weight: 300;
-      letter-spacing: -1.5px; line-height: 1;
-      color: var(--fore); font-variant-numeric: tabular-nums;
-    }
-    .om {
-      font-size: 7px; font-weight: 500;
-      letter-spacing: 1.3px; text-transform: uppercase; color: var(--muted);
-    }
-    .os {
-      font-size: 7.5px; font-weight: 500;
-      letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan);
-      animation: sp 3s ease-in-out infinite;
-    }
-    @keyframes sp { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-    /* COPY */
-    .copy { text-align: center; max-width: 500px; margin-bottom: 36px; }
-
-    .tag-pill {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 10px; font-weight: 500; letter-spacing: 1.3px;
-      text-transform: uppercase; color: var(--gold);
-      background: var(--gold-soft); border: 1px solid var(--gold-border);
-      padding: 5px 14px; border-radius: 20px;
-      margin-bottom: 22px;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
-    }
-    .td { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: td 2s ease-in-out infinite; }
-    @keyframes td { 0%,100%{opacity:1} 50%{opacity:0.15} }
-
-    h1 {
-      font-size: clamp(32px, 4.8vw, 52px);
-      font-weight: 300; line-height: 1.12;
-      letter-spacing: -1.2px; color: var(--fore);
-      margin-bottom: 16px;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both;
-    }
-    h1 b { font-weight: 600; }
-    h1 .ac { color: var(--gold); font-weight: 600; }
-
-    .sub {
-      font-size: 15px; font-weight: 300; line-height: 1.72;
-      color: var(--muted-bright); max-width: 390px; margin: 0 auto;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
-    }
-
-    /* FORM */
-    .form-box {
-      width: 100%; max-width: 400px;
-      margin-bottom: 28px;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
-    }
-    .form-lbl {
-      display: block; text-align: center;
-      font-size: 10px; font-weight: 500; letter-spacing: 0.8px;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
-    }
-    .input-wrap {
+    .header-inner {
+      height: 72px;
       display: flex;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 11px; padding: 5px 5px 5px 16px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .input-wrap:focus-within {
-      border-color: var(--gold-border);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.05);
-    }
-    .ei {
-      flex: 1; min-width: 0; background: none; border: none; outline: none;
-      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400;
-      color: var(--fore);
-    }
-    .ei::placeholder { color: rgba(180,190,210,0.28); }
-    .nb {
-      flex-shrink: 0; background: var(--gold); color: #0A0A0C;
-      border: none; cursor: pointer;
-      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
-      padding: 8px 18px; border-radius: 7px;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .nb:hover { opacity: 0.88; }
-    .nb:active { transform: scale(0.97); }
-    .fc {
-      font-size: 11px; color: var(--muted);
-      text-align: center; margin-top: 8px;
-    }
-    .success {
-      display: none; text-align: center;
-      background: rgba(0,232,150,0.07);
-      border: 1px solid rgba(0,232,150,0.16);
-      border-radius: 11px; padding: 14px;
-      font-size: 13px; color: var(--green);
+      align-items: center;
+      justify-content: space-between;
     }
 
-    /* CHIPS */
-    .chips {
-      display: flex; flex-wrap: wrap; gap: 7px; justify-content: center;
-      margin-bottom: 40px;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s both;
-    }
-    .chip {
-      display: flex; align-items: center; gap: 5px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--muted); font-size: 11px; font-weight: 400;
-      padding: 5px 12px; border-radius: 20px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
     }
 
-    /* STATS */
-    .stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      background: var(--border); border: 1px solid var(--border);
-      border-radius: 13px; overflow: hidden; gap: 1px;
-      max-width: 380px; width: 100%;
-      animation: up 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(92, 107, 192, 0.9), rgba(124, 108, 248, 0.85));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(92, 107, 192, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
-    .sc { background: var(--surface); padding: 16px 10px; text-align: center; }
-    .sv {
-      display: block; font-size: 19px; font-weight: 500;
-      letter-spacing: -0.5px; color: var(--gold);
-      line-height: 1; margin-bottom: 5px;
-    }
-    .sk { font-size: 9px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); }
 
-    /* FOOTER */
-    footer {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      height: 46px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px;
-      background: rgba(10,10,12,0.88);
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .header-badge {
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--gold-text);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .header-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+      margin-right: 8px;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .header-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--obsidian-bg);
+      background: var(--gold);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: -0.1px;
+      transition: all var(--transition-smooth);
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
+    }
+
+    .header-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+      min-height: calc(100vh - 220px);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--gold-text);
+      font-weight: 600;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      border: 1px solid var(--gold-border);
+      border-radius: 999px;
+      background: var(--gold-dim);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-eyebrow i {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(0, 245, 160, 0.7);
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6.5vw, 64px);
+      line-height: 1.06;
+      letter-spacing: -1.8px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 .gold { color: var(--gold); }
+
+    .hero-sub {
+      font-size: clamp(15px, 2.1vw, 19px);
+      color: var(--text-secondary);
+      max-width: 540px;
+      line-height: 1.58;
+      margin-bottom: 28px;
+    }
+
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .hero-trust span {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--obsidian-elevated);
+      border: 1px solid var(--border-visible);
+      border-radius: 999px;
+      padding: 7px 14px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--obsidian-bg);
+      background: var(--gold);
+      border: none;
+      padding: 15px 32px;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: -0.2px;
+      transition: all var(--transition-smooth);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.25);
+      text-decoration: none;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(212, 175, 55, 0.35);
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 40px 0 60px;
+    }
+
+    .stat-card {
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .stat-number {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.5px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Founder's Circle card ── */
+    .founders-card {
+      margin: 40px 0 60px;
+      background: linear-gradient(135deg, rgba(26, 26, 34, 0.95), rgba(20, 20, 28, 0.95));
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.08);
+    }
+
+    .founders-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .founders-card p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
+
+    .founders-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .founders-stat {
+      flex: 1;
+      min-width: 140px;
+      background: var(--obsidian-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .founders-stat b {
+      display: block;
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .founders-stat span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .founders-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid var(--gold-border);
+      padding: 12px 24px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      text-decoration: none;
+    }
+
+    .founders-cta:hover {
+      background: var(--gold-dim);
+      transform: translateY(-1px);
+    }
+
+    /* ── Email capture ── */
+    .capture-card {
+      margin: 0 0 60px;
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-visible);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .capture-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .capture-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .capture-input {
+      background: var(--obsidian-bg);
+      border: 1px solid var(--border-visible);
+      border-radius: 999px;
+      color: var(--text-primary);
+      padding: 14px 20px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color var(--transition-smooth);
+    }
+
+    .capture-input::placeholder { color: var(--text-muted); }
+    .capture-input:focus { border-color: var(--gold-border); }
+
+    .capture-btn {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--obsidian-bg);
+      background: var(--gold);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: -0.1px;
+      transition: all var(--transition-smooth);
+    }
+
+    .capture-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25); }
+
+    .capture-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* ── Phone mockup ── */
+    .phone-frame {
+      width: 300px;
+      height: 600px;
+      margin: 0 auto;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(180deg, #0D1628 0%, #0A1224 100%);
+      box-shadow: 
+        0 0 0 6px #060B18,
+        0 0 0 7px rgba(255, 255, 255, 0.05),
+        0 40px 80px rgba(0, 0, 0, 0.7),
+        0 0 60px rgba(92, 107, 192, 0.18);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-notch {
+      width: 80px;
+      height: 24px;
+      border-radius: 0 0 14px 14px;
+      background: #05080F;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .phone-screen {
+      height: 100%;
+      border-radius: 26px;
+      background: linear-gradient(180deg, #10203A 0%, #0A1528 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-status-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(189, 199, 223, 0.6);
+      padding: 12px 14px 6px;
+    }
+
+    .phone-view {
+      padding: 0 12px 0;
+      height: calc(100% - 80px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 350ms ease, transform 350ms ease;
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .phone-view::-webkit-scrollbar { display: none; }
+
+    .phone-view.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Phone Tab Bar */
+    .phone-tab-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(13, 22, 40, 0.92);
       backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border);
-      font-size: 11px; color: var(--muted);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 6px;
+      z-index: 20;
     }
-    .fl { display: flex; align-items: center; gap: 6px; color: rgba(0,232,150,0.5); }
 
-    @keyframes up {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .phone-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 24px;
+      transition: all 180ms ease;
+      border: none;
+      background: none;
+      font-family: 'Inter', sans-serif;
     }
 
-    @media (max-width: 520px) {
-      nav { padding: 0 20px; }
-      .badge { display: none; }
-      main { padding: 68px 20px 72px; }
-      h1 { font-size: 30px; letter-spacing: -0.8px; }
-      .stats { grid-template-columns: repeat(2,1fr); max-width: 260px; }
-      footer { padding: 0 20px; }
-      .fc-copy { display: none; }
+    .phone-tab.active {
+      background: rgba(92, 107, 192, 0.15);
+    }
+
+    .phone-tab-icon { font-size: 16px; line-height: 1; }
+    .phone-tab-label { font-size: 8px; font-weight: 500; color: rgba(189, 199, 223, 0.7); }
+    .phone-tab.active .phone-tab-label { color: rgba(190, 200, 240, 0.95); }
+
+    .phone-tab-indicator {
+      width: 20px;
+      height: 2px;
+      border-radius: 1px;
+      background: var(--indigo);
+      margin-top: 1px;
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .phone-tab.active .phone-tab-indicator { opacity: 1; }
+
+    /* Phone content elements */
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .phone-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--indigo), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .phone-greeting-text { font-size: 12px; color: rgba(189, 199, 223, 0.9); }
+    .phone-prime-text { font-size: 13px; font-weight: 500; }
+
+    .phone-orb {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      margin: 12px auto;
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 24px rgba(0, 212, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: orbBreathe 4s ease-in-out infinite;
+    }
+
+    .orb-inner {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      background: rgba(13, 22, 40, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    @keyframes orbBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.025); }
+    }
+
+    .phone-bar-track {
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .phone-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--indigo);
+    }
+
+    /* Progress dots */
+    .phone-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .phone-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 300ms ease;
+    }
+
+    .phone-dot.active {
+      background: var(--cyan);
+      box-shadow: 0 0 6px rgba(0, 212, 255, 0.6);
+      width: 16px;
+      border-radius: 3px;
+    }
+
+    /* Screen label */
+    .phone-screen-label {
+      position: absolute;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(212, 175, 55, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      background: rgba(10, 10, 12, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 3px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      z-index: 15;
+      transition: all 300ms ease;
+    }
+
+    /* ── What section ── */
+    .what-section {
+      margin: 60px 0;
+    }
+
+    .what-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      letter-spacing: -0.4px;
+    }
+
+    .what-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .what-card {
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .what-card h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .what-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ── How it helps ── */
+    .helps-section {
+      margin: 60px 0;
+    }
+
+    .helps-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+    }
+
+    .helps-section > p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .helps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .help-card {
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color var(--transition-smooth);
+    }
+
+    .help-card:hover { border-color: var(--gold-border); }
+
+    .help-icon { font-size: 28px; margin-bottom: 12px; }
+
+    .help-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .help-card p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Interactive Tabs Section ── */
+    .tabs-section {
+      margin: 60px 0;
+    }
+
+    .tabs-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: -0.4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-visible);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+    }
+
+    .tab-nav button {
+      flex: 1;
+      min-width: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+
+    .tab-nav button:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+
+    .tab-nav button.active {
+      color: var(--obsidian-bg);
+      background: var(--gold);
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+    }
+
+    .tab-content-panel {
+      background: var(--obsidian-surface);
+      border: 1px solid var(--border-visible);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      min-height: 200px;
+      transition: opacity 200ms ease;
+    }
+
+    .tab-content-panel h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .tab-points {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tab-points li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      list-style: none;
+      padding: 12px 16px;
+      background: var(--obsidian-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      line-height: 1.5;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 0;
+      margin-top: 60px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left { font-size: 13px; color: var(--text-muted); }
+
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition-smooth);
+    }
+
+    .footer-links a:hover { color: var(--text-primary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; min-height: auto; }
+      .hero-right { order: 1; }
+      .hero-left { order: 2; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .helps-grid { grid-template-columns: repeat(2, 1fr); }
+      .what-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .container { padding: 0 16px; }
+      .header-inner { height: 60px; }
+      .header-cta, .header-badge { display: none; }
+      .hero h1 { font-size: 34px; }
+      .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .helps-grid { grid-template-columns: 1fr; }
+      .capture-row { grid-template-columns: 1fr; }
+      .founders-stats { flex-direction: column; }
+      .tab-nav { flex-direction: column; gap: 4px; }
+      .tab-nav button { flex: none; }
+      .phone-frame { width: 260px; height: 520px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
 <body>
-
-<div class="ambient">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
-
-<nav>
-  <a class="logo" href="#">
-    <div class="logo-mark">🧠</div>
-    <span class="logo-text">Cognetra</span>
-  </a>
-  <div class="badge">Coming Soon</div>
-</nav>
-
-<main>
-
-  <!-- Orb -->
-  <div class="orb-wrap">
-    <div class="pulse-ring pr1"></div>
-    <div class="pulse-ring pr2"></div>
-    <svg class="orb" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg">
-      <circle class="ob" cx="72" cy="72" r="66"/>
-      <circle class="of" cx="72" cy="72" r="60"/>
-      <circle class="ot" cx="72" cy="72" r="64"/>
-      <circle class="oa" cx="72" cy="72" r="64" transform="rotate(-90 72 72)"/>
-      <circle class="oi" cx="72" cy="72" r="52"/>
-    </svg>
-    <div class="orb-info">
-      <div class="on" id="orbN">87%</div>
-      <div class="om">Processing Eff.</div>
-      <div class="os">● Relaxed</div>
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="Cognetra home">
+        <span class="logo-mark">🧠</span>
+        <span class="logo-text">Cognetra</span>
+      </a>
+      <div class="header-actions">
+        <span class="header-badge"><span class="header-dot"></span>Coming Soon</span>
+        <a href="#waitlist" class="header-cta">Join Waitlist</a>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Copy -->
-  <div class="copy">
-    <div class="tag-pill"><span class="td"></span>The Neural Cockpit · Launching Soon</div>
-    <h1>Train your brain.<br><span class="ac">Own your data.</span></h1>
-    <p class="sub">A privacy-first cognitive performance app built on peer-reviewed science. No accounts. No cloud. Just measurable clarity.</p>
-  </div>
+  <main>
+    <!-- ── Hero ── -->
+    <section class="container hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow"><i></i>Privacy-First · No Account Required</div>
+        <h1>Train your brain.<br /><span class="gold">Own your data.</span></h1>
+        <p class="hero-sub">Cognetra is the cognitive cockpit built on peer-reviewed protocols. No cloud. No sign‑in. Just measurable clarity — private to your device. 11 exercises across 5 cognitive domains.</p>
+        <div class="hero-trust">
+          <span>🔬 ACTIVE Trial Protocol</span>
+          <span>👁 UFOV Research-Aligned</span>
+          <span>⚡ NASA PVT Methods</span>
+          <span>🏛 No Account. Ever.</span>
+        </div>
+        <a href="#waitlist" class="hero-cta">Join the Waitlist →</a>
+      </div>
+      <div class="hero-right">
+        <div class="phone-frame" aria-hidden="true">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" id="phoneScreen">
+            <!-- Views injected by JS -->
+          </div>
+          <div class="phone-screen-label" id="screenLabel">TODAY</div>
+          <div class="phone-tab-bar" id="phoneTabBar">
+            <!-- Tabs injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Form -->
-  <div class="form-box">
-    <label class="form-lbl" for="ei">Get early access + Founder's Circle invite</label>
-    <div class="input-wrap" id="iw">
-      <input class="ei" id="ei" type="email" placeholder="your@email.com" autocomplete="email" />
-      <button class="nb" onclick="go()">Notify Me →</button>
-    </div>
-    <div class="success" id="suc">🧠 You're on the list. We'll be in touch.</div>
-    <p class="fc">No spam. Your email is never sold or shared.</p>
-  </div>
+    <!-- ── Stats Row ── -->
+    <section class="container">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-number">11</div>
+          <div class="stat-label">Research‑mapped exercises</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Core cognitive domains</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Accounts required to start</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Local‑first by default</div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Chips -->
-  <div class="chips">
-    <div class="chip">🔒 No account required</div>
-    <div class="chip">🔬 ACTIVE Trial Protocol</div>
-    <div class="chip">👁️ UFOV Research-Aligned</div>
-    <div class="chip">📱 iOS & Android</div>
-  </div>
+    <!-- ── Founder's Circle ── -->
+    <section class="container">
+      <div class="founders-card" id="founders">
+        <h3>🏛 Founder's Circle — Lifetime Access</h3>
+        <p>Own your cognitive journey forever. One payment. All features. All future updates. Limited to <strong style="font-family: 'JetBrains Mono', monospace; color: var(--gold);">5,000</strong> members.</p>
+        <div class="founders-stats">
+          <div class="founders-stat">
+            <b>$249</b>
+            <span>One‑time payment</span>
+          </div>
+          <div class="founders-stat">
+            <b>5,000</b>
+            <span>Member cap</span>
+          </div>
+          <div class="founders-stat">
+            <b>Lifetime</b>
+            <span>All features + updates</span>
+          </div>
+        </div>
+        <a href="#waitlist" class="founders-cta">Join Founder's Circle →</a>
+      </div>
+    </section>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="sc"><span class="sv">11</span><span class="sk">Exercises</span></div>
-    <div class="sc"><span class="sv">5</span><span class="sk">Domains</span></div>
-    <div class="sc"><span class="sv">100%</span><span class="sk">On-device</span></div>
-    <div class="sc"><span class="sv">0</span><span class="sk">Accounts</span></div>
-  </div>
+    <!-- ── Waitlist Capture ── -->
+    <section class="container" id="waitlist">
+      <div class="capture-card">
+        <div class="capture-label">Be first to know when Cognetra launches</div>
+        <div class="capture-row">
+          <input type="email" id="emailInput" class="capture-input" placeholder="you@example.com" autocomplete="email" aria-label="Email address" />
+          <button class="capture-btn" id="joinButton">Join Waitlist</button>
+        </div>
+        <p class="capture-note">One field only. No spam. No email selling. Ever.</p>
+        <div id="successMessage" style="display:none; margin-top:14px; color: var(--green); font-size:14px; font-weight:600;">✓ You're on the list. We'll share launch updates soon.</div>
+      </div>
+    </section>
 
-</main>
+    <!-- ── What Cognetra is ── -->
+    <section class="container">
+      <div class="what-section">
+        <h2>What Cognetra is</h2>
+        <div class="what-grid">
+          <div class="what-card">
+            <h4>📊 A cognitive cockpit</h4>
+            <p>See your real‑time Processing Efficiency, domain strength across 5 areas, and a personalised daily plan in one glance. No clutter. No ads. Just clarity.</p>
+          </div>
+          <div class="what-card">
+            <h4>🔒 Private by default</h4>
+            <p>Brain data stays on‑device. No cloud uploads, no sign‑in required. Cloud Vault backup is opt‑in only. Your cognitive state never leaves your phone.</p>
+          </div>
+          <div class="what-card">
+            <h4>🔬 Built on research</h4>
+            <p>11 exercises mapped to peer‑reviewed protocols: ACTIVE trial (dementia risk reduction), NASA PVT, Wisconsin Card Sort, UFOV, and 200+ dual n‑back studies.</p>
+          </div>
+          <div class="what-card">
+            <h4>🧠 Socratic AI coaching</h4>
+            <p>Nova asks questions that build metacognition — not just "your score went up," but "what do you think helped?" All processing on‑device, never sent to servers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<footer>
-  <div class="fl">🔒 Brain data never leaves your device</div>
-  <div class="fc-copy">© 2025 Cognetra · No accounts. No cloud. Just clarity.</div>
-</footer>
+    <!-- ── How It Helps ── -->
+    <section class="container">
+      <div class="helps-section">
+        <h2>How Cognetra improves your daily life</h2>
+        <p>Research‑informed training that translates to real‑world cognitive performance.</p>
+        <div class="helps-grid">
+          <div class="help-card">
+            <div class="help-icon">💼</div>
+            <h4>Power through meetings</h4>
+            <p>Training sustained attention helps you stay engaged during long presentations and deep work sessions without mental fatigue.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">👥</div>
+            <h4>Remember details</h4>
+            <p>Strengthen working memory to recall names, key points from books, and where you left your keys.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">⚡</div>
+            <h4>Think faster under pressure</h4>
+            <p>Faster mental processing helps you respond quickly in conversations and avoid afternoon brain fog.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">🔄</div>
+            <h4>Adapt when plans change</h4>
+            <p>Cognitive flexibility training helps you pivot smoothly when priorities shift, reducing stress.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">👁</div>
+            <h4>Stay aware of surroundings</h4>
+            <p>The Peripheral Vision Challenge trains useful field of view — the ACTIVE trial's dementia‑risk protocol — essential for driving safety.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">🌿</div>
+            <h4>Recover from burnout</h4>
+            <p>Adaptive difficulty means you train at your current capacity. Recovery‑mode recommendations keep you progressing without pushing too hard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<script>
-  const seq = [87,79,93,84,91,76,88,95];
-  let si = 0;
-  const el = document.getElementById('orbN');
-  function to(t) {
-    const f = parseInt(el.textContent);
-    const d = t - f, n = 32; let s = 0;
-    const r = setInterval(() => {
-      s++; el.textContent = Math.round(f + d*(s/n)) + '%';
-      if (s >= n) { clearInterval(r); el.textContent = t + '%'; }
-    }, 26);
-  }
-  setInterval(() => { si = (si+1)%seq.length; to(seq[si]); }, 3600);
+    <!-- ── Interactive Tabs ── -->
+    <section class="container">
+      <div class="tabs-section">
+        <h2>Everything you need, nothing you don't</h2>
+        <nav class="tab-nav" id="tabNav">
+          <button class="active" data-tab="today">🧠 Today</button>
+          <button data-tab="train">🎯 Train</button>
+          <button data-tab="insights">📈 Insights</button>
+          <button data-tab="connect">🤝 Connect</button>
+          <button data-tab="you">👤 You</button>
+        </nav>
+        <div class="tab-content-panel" id="tabContent"></div>
+      </div>
+    </section>
 
-  function go() {
-    const v = document.getElementById('ei').value.trim();
-    const iw = document.getElementById('iw');
-    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
-      iw.style.borderColor = 'rgba(255,70,70,0.4)';
-      setTimeout(() => iw.style.borderColor = '', 1500);
-      return;
+    <!-- ── Footer ── -->
+    <footer class="container">
+      <div class="footer-inner">
+        <div class="footer-left">© 2026 Cognetra · No accounts. No cloud. Just clarity.</div>
+        <div class="footer-links">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/transparency">Transparency</a>
+          <a href="/statement-of-limitations">Limitations</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ============================================================
+    // WAITLIST
+    // ============================================================
+    const emailInput = document.getElementById('emailInput');
+    const joinButton = document.getElementById('joinButton');
+    const successMessage = document.getElementById('successMessage');
+
+    function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    function submitWaitlist() {
+      const v = emailInput.value.trim();
+      if (!isValidEmail(v)) {
+        emailInput.style.borderColor = 'rgba(255,85,85,0.6)';
+        emailInput.focus();
+        setTimeout(() => { emailInput.style.borderColor = ''; }, 1200);
+        return;
+      }
+      document.querySelector('.capture-row').style.display = 'none';
+      successMessage.style.display = 'block';
+      console.log('Waitlist signup:', v);
     }
-    iw.style.display = 'none';
-    document.getElementById('suc').style.display = 'block';
-    document.querySelector('.fc').style.display = 'none';
-    console.log('Waitlist signup:', v);
-  }
-  document.getElementById('ei').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
-</script>
+
+    joinButton.addEventListener('click', submitWaitlist);
+    emailInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitWaitlist(); });
+
+    // ============================================================
+    // PHONE MOCKUP — Animated tab cycling matching App.jsx
+    // ============================================================
+    const tabData = [
+      {
+        id: 'today',
+        label: 'TODAY',
+        color: '#00D4FF',
+        primeText: 'Ready for deep work',
+        primeColor: '#00F5A0',
+        content: `
+          <div class="phone-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="phone-avatar" style="background:linear-gradient(135deg,#5C6BC0,#00F5A0);">S</div>
+              <div>
+                <div class="phone-greeting-text">Good morning</div>
+                <div class="phone-prime-text" style="color:#00F5A0;">Ready for deep work</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(189,199,223,0.7);">
+              <span>✨</span>
+              <span style="font-family:'JetBrains Mono',monospace;">🔥 12</span>
+            </div>
+          </div>
+          <div class="phone-orb">
+            <div class="orb-inner">
+              <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:24px;color:#EEF2FF;">87%</div>
+              <div style="font-size:10px;color:#00F5A0;font-weight:500;">Strong Capacity</div>
+              <div style="font-size:7px;color:rgba(189,199,223,0.6);letter-spacing:1px;">PROCESSING EFF.</div>
+              <div style="font-size:9px;color:#00D4FF;">• Relaxed •</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:12px;color:#00F5A0;margin-top:4px;">Ready for deep work</div>
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:10px;cursor:pointer;color:rgba(92,107,192,0.9);font-size:11px;">
+            <span>🎧</span><span>Focus Sound · Active</span>
+          </div>
+          <div style="margin-top:8px;background:rgba(12,22,42,0.9);border:1px solid rgba(0,212,255,0.2);border-radius:12px;padding:8px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:14px;">💡</span>
+              <span style="font-size:10px;font-weight:600;color:#EEF2FF;">Ready to build on this?</span>
+              <span style="font-size:7px;background:rgba(124,108,248,0.2);color:#b9b0ff;border-radius:6px;padding:2px 5px;">AI · On-device</span>
+            </div>
+            <div style="font-size:9px;color:rgba(189,199,223,0.8);margin-left:20px;margin-bottom:6px;">What do you think caused that shift?</div>
+            <div style="background:linear-gradient(135deg,#00F5A0,#5C6BC0);border-radius:10px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:#060B18;">🎯 Begin: Reaction Chamber + Neural Network</div>
+            <div style="text-align:center;font-size:8px;color:rgba(189,199,223,0.5);margin-top:4px;">~8 min · Optimized for you</div>
+          </div>
+        `
+      },
+      {
+        id: 'train',
+        label: 'TRAIN',
+        color: '#7C6CF8',
+        primeText: 'Your daily cognitive training',
+        primeColor: '#7C6CF8',
+        content: `
+          <div class="phone-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="phone-avatar" style="background:linear-gradient(135deg,#7C6CF8,#00D4FF);">S</div>
+              <div>
+                <div class="phone-greeting-text">Train</div>
+                <div class="phone-prime-text" style="color:#7C6CF8;">Your daily cognitive training</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button style="background:none;border:1px solid rgba(0,212,255,0.4);border-radius:12px;padding:2px 8px;font-size:8px;color:#00D4FF;cursor:pointer;">🧘 Breathe</button>
+              <span style="font-size:12px;">🔍</span>
+            </div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:6px;">DOMAIN STRENGTH</div>
+            <div style="display:grid;gap:3px;">
+              <div style="display:flex;align-items:center;gap:6px;"><span style="width:80px;font-size:8px;color:rgba(189,199,223,0.8);">Focus (Attention)</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#00F5A0;">85</span><div class="phone-bar-track"><div class="phone-bar-fill" style="width:85%;background:#00F5A0;"></div></div><span style="font-size:7px;color:#00F5A0;">↑ 2%</span></div>
+              <div style="display:flex;align-items:center;gap:6px;"><span style="width:80px;font-size:8px;color:rgba(189,199,223,0.8);">Quick Thinking</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5C6BC0;">78</span><div class="phone-bar-track"><div class="phone-bar-fill" style="width:78%;background:#5C6BC0;"></div></div><span style="font-size:7px;color:#5C6BC0;">↑ 8%</span><span style="font-size:7px;color:#5C6BC0;">⭐ NASA PVT</span></div>
+              <div style="display:flex;align-items:center;gap:6px;border:1.5px solid rgba(255,174,0,0.4);border-radius:6px;padding:4px;margin:0 -4px;background:rgba(255,174,0,0.06);"><span style="width:80px;font-size:8px;color:rgba(189,199,223,0.8);">Adaptability</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#FFAE00;">45</span><div class="phone-bar-track"><div class="phone-bar-fill" style="width:45%;background:#FFAE00;height:6px;"></div></div><span style="font-size:7px;color:#FFAE00;">↓ 3%</span><span style="font-size:7px;color:#FFAE00;">← Growth area</span></div>
+            </div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+            <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:4px;">STARTER SEQUENCE (Default)</div>
+            <div style="font-size:9px;color:rgba(189,199,223,0.8);">Curated 3‑exercise path first.</div>
+            <div style="display:grid;gap:4px;margin-top:4px;">
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.9);border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:3px;"><span>1. Reaction Chamber</span><span style="color:#5C6BC0;">Play →</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.9);border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:3px;"><span>2. Peripheral Vision Challenge</span><span style="color:#5C6BC0;">Play →</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.9);"><span>3. Wisconsin Deck</span><span style="color:#5C6BC0;">Play →</span></div>
+            </div>
+            <div style="text-align:center;font-size:9px;font-weight:600;color:#5C6BC0;margin-top:6px;cursor:pointer;">View Full Catalog</div>
+          </div>
+        `
+      },
+      {
+        id: 'insights',
+        label: 'INSIGHTS',
+        color: '#00D4FF',
+        primeText: 'Cognitive Peak: 34 · ↓1 pts',
+        primeColor: 'rgba(189,199,223,0.7)',
+        content: `
+          <div class="phone-header">
+            <div>
+              <div style="font-size:14px;font-weight:600;color:#EEF2FF;">Insights</div>
+              <div style="font-size:10px;color:rgba(189,199,223,0.7);">Cognitive Peak: <span style="font-family:'JetBrains Mono',monospace;">34</span> · ↓<span style="font-family:'JetBrains Mono',monospace;">1</span> pts</div>
+            </div>
+            <span style="font-size:14px;">📤</span>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:9px;font-weight:600;color:#EEF2FF;">📖 YOUR WEEK IN REVIEW</div>
+            <div style="font-size:8px;color:rgba(189,199,223,0.8);margin-top:4px;line-height:1.5;">Monday: Started strong with Reaction Chamber at <span style="font-family:'JetBrains Mono',monospace;color:#00F5A0;">842</span>. Wednesday: Bounced back with Neural Network N‑Back <span style="font-family:'JetBrains Mono',monospace;color:#00D4FF;">3.2</span> — new record. <strong style="color:#00F5A0;">Resilience</strong> — What helped you recover?</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+            <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+              <div style="font-size:7px;font-weight:600;color:rgba(189,199,223,0.6);margin-bottom:4px;">THIS WEEK</div>
+              <div style="font-size:9px;color:#EEF2FF;">Sessions: <span style="font-family:'JetBrains Mono',monospace;">4</span></div>
+              <div style="font-size:9px;color:#00F5A0;">Efficiency: <span style="font-family:'JetBrains Mono',monospace;">+8%</span></div>
+            </div>
+            <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+              <div style="font-size:7px;font-weight:600;color:rgba(189,199,223,0.6);margin-bottom:4px;">NEXT ACTION</div>
+              <div style="font-size:8px;color:rgba(189,199,223,0.8);">Run one focus session before noon.</div>
+              <div style="text-align:center;font-size:7px;font-weight:600;color:#5C6BC0;margin-top:4px;cursor:pointer;">Start Session →</div>
+            </div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+            <div style="font-size:9px;font-weight:600;color:#EEF2FF;">Processing Efficiency trend</div>
+            <div style="display:flex;gap:4px;margin:6px 0;"><button style="font-size:7px;background:#5C6BC0;color:#fff;border:none;border-radius:8px;padding:3px 8px;">7D</button><button style="font-size:7px;background:transparent;color:rgba(189,199,223,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:3px 8px;">30D</button></div>
+            <svg viewBox="0 0 240 50" style="width:100%;height:40px;"><path d="M0,35 Q15,30 30,28 T60,22 T90,25 T120,18 T150,15 T180,14 T210,12 T240,10" fill="none" stroke="#5C6BC0" stroke-width="1.5"/></svg>
+          </div>
+        `
+      },
+      {
+        id: 'connect',
+        label: 'CONNECT',
+        color: '#00D4FF',
+        primeText: 'Accountability, privately',
+        primeColor: 'rgba(189,199,223,0.7)',
+        content: `
+          <div style="font-size:13px;font-weight:600;color:#EEF2FF;margin-bottom:8px;">Connect</div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:8px;font-weight:600;color:rgba(189,199,223,0.6);margin-bottom:4px;">📊 YOUR CONSISTENCY — April 2026</div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:7px;color:rgba(189,199,223,0.5);margin-bottom:4px;"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;">${Array.from({length:21},(_,i)=>`<div style="aspect-ratio:1;border-radius:2px;background:${i<16?'#5C6BC0':'rgba(255,255,255,0.1)'};opacity:${i<16?1:0.4};"></div>`).join('')}</div>
+            <div style="font-size:8px;color:rgba(189,199,223,0.8);"><span style="font-family:'JetBrains Mono',monospace;">18</span> of 30 days active</div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:7px;color:rgba(189,199,223,0.7);"><span>Beat last week: <span style="font-family:'JetBrains Mono',monospace;">3/5</span></span></div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;">🤝 BUDDY — Jordan L. <span style="color:#00F5A0;font-size:7px;">🔥 14</span></div>
+            <div style="font-size:7px;color:#00F5A0;margin:4px 0;">🎉 You're both on 7+ day streaks!</div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:6px;background:rgba(92,107,192,0.15);color:#EEF2FF;border-radius:8px;padding:2px 5px;">💪 Great streak!</span><span style="font-size:6px;background:rgba(92,107,192,0.15);color:#EEF2FF;border-radius:8px;padding:2px 5px;">🤔 What's your secret?</span></div>
+            <div style="display:flex;gap:4px;margin-top:6px;"><button style="flex:1;font-size:7px;background:#5C6BC0;color:#fff;border:none;border-radius:10px;padding:4px;">Challenge →</button><button style="flex:1;font-size:7px;background:rgba(92,107,192,0.15);color:#5C6BC0;border:none;border-radius:10px;padding:4px;">Disconnect</button></div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;margin-bottom:4px;">🏆 THIS WEEK'S LEADERBOARD</div>
+            ${['🥇 MindfulMaven 920','🥈 CognitiveWave 905','🥉 NeuralNinja 892','4. You (Private) 815'].map(r=>`<div style="display:flex;justify-content:space-between;font-size:7px;color:rgba(189,199,223,0.85);padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);">${r.split(' ').map((p,i)=>{if(i===r.split(' ').length-1)return`<span style="font-family:'JetBrains Mono',monospace;">${p}</span>`;return`<span>${p}</span>`}).join(' ')}</div>`).join('')}
+            <div style="font-size:7px;color:#5C6BC0;margin-top:4px;">Top <span style="font-family:'JetBrains Mono',monospace;">15</span>% this week</div>
+          </div>
+        `
+      },
+      {
+        id: 'you',
+        label: 'YOU',
+        color: '#7C6CF8',
+        primeText: 'Identity, science, and controls',
+        primeColor: 'rgba(189,199,223,0.7)',
+        content: `
+          <div style="font-size:13px;font-weight:600;color:#EEF2FF;margin-bottom:8px;">You</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:44px;height:44px;border-radius:22px;background:linear-gradient(135deg,#5C6BC0,#00D4FF);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;color:#fff;">S</div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:#EEF2FF;">Sarah</div>
+              <div style="font-size:9px;color:rgba(189,199,223,0.7);">Cognitive Peak: <span style="font-family:'JetBrains Mono',monospace;">34</span> · ↓<span style="font-family:'JetBrains Mono',monospace;">1</span></div>
+            </div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;margin-bottom:4px;">📋 COGNITIVE PROFILE</div>
+            <div style="font-size:8px;color:rgba(189,199,223,0.8);">Your Profile is ready! 12/10 sessions</div>
+            <div style="text-align:center;font-size:8px;font-weight:600;color:#5C6BC0;margin-top:6px;cursor:pointer;">Export Cognitive Profile →</div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;margin-bottom:6px;">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;">💰 POINTS & REWARDS</div>
+            <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(189,199,223,0.8);margin-top:4px;"><span>💳 <span style="font-family:'JetBrains Mono',monospace;">1,250</span> Points</span><span style="color:#5C6BC0;">Redeem →</span></div>
+            <div style="font-size:8px;color:rgba(189,199,223,0.8);margin-top:4px;">🛡️ Rest Days: <span style="font-family:'JetBrains Mono',monospace;">2/3</span></div>
+          </div>
+          <div style="background:rgba(18,18,30,0.9);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:8px;">
+            <div style="font-size:8px;font-weight:600;color:#EEF2FF;">🌍 PHILANTHROPY HUB</div>
+            <div style="display:flex;justify-content:space-around;margin:6px 0;font-size:8px;color:rgba(189,199,223,0.8);">
+              <div style="text-align:center;"><div style="font-family:'JetBrains Mono',monospace;color:#00F5A0;">84.2K</div><div style="font-size:7px;">trees</div></div>
+              <div style="text-align:center;"><div style="font-family:'JetBrains Mono',monospace;color:#00D4FF;">312.5K</div><div style="font-size:7px;">meals</div></div>
+              <div style="text-align:center;"><div style="font-family:'JetBrains Mono',monospace;color:#7C6CF8;">29.7K</div><div style="font-size:7px;">hours</div></div>
+            </div>
+            <div style="text-align:center;font-size:7px;color:#5C6BC0;cursor:pointer;">View impact →</div>
+          </div>
+        `
+      }
+    ];
+
+    const phoneScreen = document.getElementById('phoneScreen');
+    const phoneTabBar = document.getElementById('phoneTabBar');
+    const screenLabel = document.getElementById('screenLabel');
+    let currentPhoneTab = 0;
+    let autoCycleTimer = null;
+    let isHoveringPhone = false;
+
+    // Build phone views
+    tabData.forEach((tab, idx) => {
+      const view = document.createElement('div');
+      view.className = `phone-view${idx === 0 ? ' active' : ''}`;
+      view.dataset.tab = tab.id;
+      view.innerHTML = tab.content;
+      phoneScreen.appendChild(view);
+    });
+
+    // Build phone tab bar
+    const tabIcons = ['🧠','🎯','📈','🤝','👤'];
+    tabData.forEach((tab, idx) => {
+      const btn = document.createElement('button');
+      btn.className = `phone-tab${idx === 0 ? ' active' : ''}`;
+      btn.innerHTML = `
+        <span class="phone-tab-icon">${tabIcons[idx]}</span>
+        <span class="phone-tab-label">${tab.id.charAt(0).toUpperCase()+tab.id.slice(1)}</span>
+        <div class="phone-tab-indicator"></div>
+      `;
+      btn.addEventListener('click', () => switchPhoneTab(idx));
+      phoneTabBar.appendChild(btn);
+    });
+
+    function switchPhoneTab(idx) {
+      currentPhoneTab = idx;
+      const tab = tabData[idx];
+      
+      // Update views
+      document.querySelectorAll('.phone-view').forEach((v, i) => {
+        v.classList.toggle('active', i === idx);
+      });
+      
+      // Update tab bar
+      document.querySelectorAll('.phone-tab').forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+      });
+      
+      // Update screen label
+      screenLabel.textContent = tab.label;
+      screenLabel.style.color = tab.color;
+      
+      // Reset auto-cycle
+      resetAutoCycle();
+    }
+
+    function resetAutoCycle() {
+      if (autoCycleTimer) clearInterval(autoCycleTimer);
+      if (!isHoveringPhone) {
+        autoCycleTimer = setInterval(() => {
+          switchPhoneTab((currentPhoneTab + 1) % tabData.length);
+        }, 3000);
+      }
+    }
+
+    // Pause on hover
+    phoneScreen.parentElement.addEventListener('mouseenter', () => {
+      isHoveringPhone = true;
+      if (autoCycleTimer) clearInterval(autoCycleTimer);
+    });
+    
+    phoneScreen.parentElement.addEventListener('mouseleave', () => {
+      isHoveringPhone = false;
+      resetAutoCycle();
+    });
+
+    // Start auto-cycle
+    autoCycleTimer = setInterval(() => {
+      switchPhoneTab((currentPhoneTab + 1) % tabData.length);
+    }, 3000);
+
+    // ============================================================
+    // INFO TABS (below phone)
+    // ============================================================
+    const infoTabs = {
+      today: {
+        title: 'Today — Your real‑time cognitive state',
+        points: [
+          'Processing Efficiency % shown on the Neural Orb with contextual whisper ("Ready for deep work")',
+          'Nova Coach: Socratic AI insights generated on‑device, never sent to servers',
+          'Begin Session button with merged label — one tap starts your optimal workout (~8 min)',
+          'Biometrics pills show HR, sleep, readiness trends — wearable‑gated, always local',
+          'Quarterly Booster card reminds you of maintenance sessions at months 3/6/9/12'
+        ]
+      },
+      train: {
+        title: 'Train — 11 research‑mapped exercises with starter sequence',
+        points: [
+          'Domain Strength bars replace radar charts for instant readability across 5 domains',
+          'Three‑tier clinical classification: ACTIVE‑Aligned, Executive Function, General Cognitive',
+          'Scientific badges visible on each card (🏛 Gold Standard, ⭐ ACTIVE Trial, 🔬 NASA, 👁 UFOV)',
+          'Starter sequence of 3 exercises shown first — full catalog one tap deeper',
+          'RL Coach recommends your fastest‑improving exercise with Socratic reasoning'
+        ]
+      },
+      insights: {
+        title: 'Insights — Long‑term patterns, summary first',
+        points: [
+          'Narrative Weekly Summary collapsed by default with theme ("Resilience") + Socratic question',
+          'Processing Efficiency trend chart — 7‑day free, 30‑day Premium with blurred preview',
+          'Fatigue Trend Card with actionable alert throttled to 2× per week',
+          'Domain percentile display delayed until session 5 ("Building Baseline" before session 5)',
+          'Shareable snapshot with subtle Obsidian Veil watermark'
+        ]
+      },
+      connect: {
+        title: 'Connect — Accountability, privately (unlocks Day 3)',
+        points: [
+          'Buddy system with rate‑limited encouragements (3/day) and Socratic variant ("What\'s your secret?")',
+          'Leaderboard with explicit opt‑in consent modal and privacy explanation',
+          'Pass & Play and Async Challenge consolidated into single Duel card',
+          'Solo Streak calendar with anticipation ghost dot for tomorrow\'s milestone',
+          'Community Impact moved to You tab (Philanthropy Hub) — single source of truth'
+        ]
+      },
+      you: {
+        title: 'You — Identity, science, and controls',
+        points: [
+          'Default identity: "Neural Pilot" — editable, never "Guest"',
+          'Cognitive Profile PDF export — 1 free generation, Premium thereafter with blurred preview',
+          'The Science section with 11 peer‑reviewed citations and Wellness Moat card',
+          'All 9 HUD themes visible: Neural Core (free) + 8 Premium/Premium++ with Clean Lock design',
+          'Philanthropy Hub: contribute Points to reforestation, hunger relief, or education',
+          'Care Team: async chat inbox, no email required, 3‑tier diagnostic consent system'
+        ]
+      }
+    };
+
+    const tabNav = document.getElementById('tabNav');
+    const tabContent = document.getElementById('tabContent');
+
+    function renderInfoTab(key) {
+      const t = infoTabs[key];
+      tabContent.style.opacity = '0';
+      setTimeout(() => {
+        tabContent.innerHTML = `<h3>${t.title}</h3><ul class="tab-points">${t.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+        tabContent.style.opacity = '1';
+      }, 160);
+      tabNav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.tab === key));
+    }
+
+    tabNav.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') renderInfoTab(e.target.dataset.tab);
+    });
+
+    renderInfoTab('today');
+  </script>
 </body>
 </html>
