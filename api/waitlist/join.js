@@ -59,12 +59,23 @@ module.exports = async function handler(req, res) {
       to: email,
       subject: 'Confirm your Cognetra waitlist spot',
       html: `
-        <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#0B1220;">
-          <h2>Confirm your waitlist request</h2>
-          <p>Tap the button below to confirm your place on the Cognetra launch waitlist.</p>
-          <p><a href="${confirmUrl}" style="display:inline-block;padding:12px 18px;background:#D4AF37;color:#0B1220;text-decoration:none;border-radius:999px;font-weight:700;">Confirm my email</a></p>
-          <p style="font-size:13px;color:#475467;">This link expires in 48 hours.</p>
-          <p style="font-size:13px;color:#475467;">If you did not request this, you can ignore this email.</p>
+        <div style="margin:0;padding:24px;background:#F3F5F8;">
+          <div style="font-family:Inter,Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
+            <div style="padding:20px 24px;background:linear-gradient(135deg,#0C1424,#13213D);color:#FFFFFF;">
+              <div style="font-size:12px;letter-spacing:0.12em;opacity:0.85;text-transform:uppercase;">Cognetra</div>
+              <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;">Confirm your waitlist request</h1>
+            </div>
+            <div style="padding:24px;color:#0F172A;">
+              <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Thanks for joining the Cognetra Founder's Circle waitlist.</p>
+              <p style="margin:0 0 20px;font-size:15px;line-height:1.6;">Please confirm your email to activate launch updates and early access notices.</p>
+              <a href="${confirmUrl}" style="display:inline-block;padding:12px 20px;background:#D4AF37;color:#111827;text-decoration:none;border-radius:999px;font-weight:700;font-size:14px;">Confirm my email</a>
+              <p style="margin:20px 0 0;font-size:13px;line-height:1.6;color:#475467;">This secure link expires in 48 hours.</p>
+              <p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#475467;">If you did not request this, you can ignore this email.</p>
+            </div>
+            <div style="padding:14px 24px;border-top:1px solid #E5E7EB;background:#FAFAFA;color:#667085;font-size:12px;line-height:1.5;">
+              Privacy-first by design. No account required. Data remains on-device by default.
+            </div>
+          </div>
         </div>
       `
     });

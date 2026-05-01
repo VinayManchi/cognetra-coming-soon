@@ -53,10 +53,21 @@ module.exports = async function handler(req, res) {
         to: email,
         subject: 'Welcome to the Cognetra waitlist',
         html: `
-          <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#0B1220;">
-            <h2>You are confirmed</h2>
-            <p>Your email is now confirmed for Cognetra launch updates and early access announcements.</p>
-            <p>Thank you for joining the Founder's Circle waitlist.</p>
+          <div style="margin:0;padding:24px;background:#F3F5F8;">
+            <div style="font-family:Inter,Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
+              <div style="padding:20px 24px;background:linear-gradient(135deg,#0C1424,#13213D);color:#FFFFFF;">
+                <div style="font-size:12px;letter-spacing:0.12em;opacity:0.85;text-transform:uppercase;">Cognetra</div>
+                <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;">You are confirmed</h1>
+              </div>
+              <div style="padding:24px;color:#0F172A;">
+                <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your email is now confirmed for Cognetra launch updates and early access announcements.</p>
+                <p style="margin:0 0 18px;font-size:15px;line-height:1.6;">Thank you for joining the Founder's Circle waitlist.</p>
+                <a href="${home}" style="display:inline-block;padding:11px 18px;background:#0F172A;color:#FFFFFF;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Return to website</a>
+              </div>
+              <div style="padding:14px 24px;border-top:1px solid #E5E7EB;background:#FAFAFA;color:#667085;font-size:12px;line-height:1.5;">
+                We will only send important launch and access updates.
+              </div>
+            </div>
           </div>
         `
       });
