@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cognetra — The Cognitive Cockpit. Private by Design.</title>
-  <meta name="description" content="Cognetra is a privacy-first cognitive training app built on peer-reviewed protocols. No cloud. No sign-in. Just measurable clarity — private to your device. Join the Founder's Circle waitlist." />
+  <title>Cognetra — The Cognitive Cockpit, Private by Design</title>
+  <meta name="description" content="Cognetra is the cognitive eye — a privacy-first cognitive training app built on peer-reviewed protocols. No cloud. No sign-in. Just measurable clarity, private to your device. Join the Founder's Circle waitlist." />
   <meta name="theme-color" content="#0A0A0C" />
   <meta property="og:title" content="Cognetra — Train your brain. Own your data." />
-  <meta property="og:description" content="The cognitive cockpit built on peer-reviewed science. No account required. 11 exercises across 5 cognitive domains. Join the waitlist." />
+  <meta property="og:description" content="The cognitive eye built on peer-reviewed science. No account required. 11 exercises across five cognitive domains. Join the waitlist." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -346,6 +346,24 @@
     .what-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 28px; }
     .what-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .what-card { background: var(--obsidian-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; }
+    .etymology-card {
+      margin: 6px 0 24px;
+      background: linear-gradient(135deg, rgba(18,18,26,0.96), rgba(14,16,24,0.96));
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+    .etymology-eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px; font-weight: 600; }
+    .etymology-card h3 { font-size: 24px; margin-bottom: 10px; }
+    .etymology-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.55; }
+    .trust-section { margin: 28px 0 12px; }
+    .trust-section h3 { font-size: 24px; margin-bottom: 10px; }
+    .trust-section p { color: var(--text-secondary); margin-bottom: 14px; }
+    .built-by { margin-top: 10px; font-size: 12px; color: var(--text-muted); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .trust-card { background: var(--obsidian-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; }
+    .trust-card h4 { font-size: 14px; margin-bottom: 6px; }
+    .trust-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
 
     /* Footer */
     footer { padding: 44px 0 26px; margin-top: 70px; }
@@ -370,6 +388,7 @@
       .stats-row { grid-template-columns: repeat(2,1fr); }
       .helps-grid { grid-template-columns: repeat(2,1fr); }
       .what-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 680px) {
       .container { padding: 0 14px; }
@@ -412,6 +431,11 @@
       .info-feature-body { font-size: 12px; }
       .what-section h2, .helps-section h2, .tabs-section h2 { font-size: 26px; margin-bottom: 16px; }
       .what-card, .help-card { padding: 16px; }
+      .etymology-card { padding: 16px; }
+      .etymology-card h3 { font-size: 20px; }
+      .etymology-card p { font-size: 14px; }
+      .trust-section h3 { font-size: 20px; }
+      .trust-card { padding: 14px; }
       footer { margin-top: 30px; padding: 24px 0 18px; }
       .footer-inner { justify-content: center; text-align: center; padding: 14px; }
       .footer-links { justify-content: center; width: 100%; gap: 8px; }
@@ -444,7 +468,7 @@
 <body>
   <header>
     <div class="container header-inner">
-      <a href="#" class="logo">
+      <a href="/" class="logo">
         <span class="logo-mark">🧠</span>
         <span class="logo-text">Cognetra</span>
       </a>
@@ -461,7 +485,7 @@
       <div class="hero-left">
         <div class="hero-eyebrow"><i></i>Privacy-First · No Account Required</div>
         <h1>Train your brain.<br /><span class="gold">Own your data.</span></h1>
-        <p class="hero-sub">Cognetra is the cognitive cockpit built on peer-reviewed protocols. No cloud. No sign‑in. 11 exercises across 5 cognitive domains. Just measurable clarity — private to your device.</p>
+        <p class="hero-sub">Cognetra is the cognitive eye <span style="opacity:0.82;">(from Latin <em>cogni</em> + Sanskrit <em>netra</em>)</span> built on peer-reviewed protocols. No cloud. No sign-in. 11 exercises across five cognitive domains. Just measurable clarity, private to your device — so you can see clearly.</p>
         <div class="hero-trust">
           <span>🔬 ACTIVE Trial Protocol</span>
           <span>👁 UFOV Research-Aligned</span>
@@ -478,7 +502,7 @@
               </svg>
             </span>
             <span class="store-text">
-              <span class="store-kicker">Planned on launch</span>
+              <span class="store-kicker">Available at launch</span>
               <span class="store-name">App Store</span>
             </span>
           </div>
@@ -492,7 +516,7 @@
               </svg>
             </span>
             <span class="store-text">
-              <span class="store-kicker">Planned on launch</span>
+              <span class="store-kicker">Available at launch</span>
               <span class="store-name">Google Play</span>
             </span>
           </div>
@@ -515,6 +539,69 @@
         <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">Core cognitive domains</div></div>
         <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Accounts required to start</div></div>
         <div class="stat-card"><div class="stat-number">100%</div><div class="stat-label">Local‑first by default</div></div>
+      </div>
+    </section>
+
+    <!-- What -->
+    <section class="container">
+      <div class="what-section">
+        <h2>What Cognetra is</h2>
+        <div class="what-grid">
+          <div class="what-card"><h4>📊 The cognitive eye</h4><p>See your real-time Processing Efficiency, domain strength across five areas, and a personalised daily plan in one glance.</p></div>
+          <div class="what-card"><h4>🔒 Private by default</h4><p>Brain data stays on‑device. No cloud uploads, no sign‑in required. Cloud Vault backup is opt‑in only.</p></div>
+          <div class="what-card"><h4>🔬 Built on research</h4><p>11 exercises mapped to peer‑reviewed protocols: ACTIVE trial, NASA PVT, Wisconsin Card Sort, UFOV, and 200+ dual n‑back studies.</p></div>
+          <div class="what-card"><h4>🧠 Socratic AI coaching</h4><p>Nova asks questions that build metacognition — all processing on‑device, never sent to servers.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="container">
+      <div class="etymology-card">
+        <div class="etymology-eyebrow">The name</div>
+        <h3>Cognetra — the cognitive eye.</h3>
+        <p>From Latin <em>cogni</em> (to know) and Sanskrit <em>netra</em> (the seeing faculty). Two traditions, one insight: clear perception is the foundation of all cognition.</p>
+      </div>
+    </section>
+
+    <!-- How It Helps -->
+    <section class="container">
+      <div class="helps-section">
+        <h2>How Cognetra improves your daily life</h2>
+        <p>Research‑informed training that translates to real‑world cognitive performance.</p>
+        <div class="helps-grid">
+          <div class="help-card"><div class="help-icon">👁</div><h4>Stay aware of surroundings</h4><p>Peripheral Vision Challenge trains UFOV — the ACTIVE trial's dementia‑risk protocol.</p></div>
+          <div class="help-card"><div class="help-icon">💼</div><h4>Power through meetings</h4><p>Sustained attention training keeps you engaged during long presentations.</p></div>
+          <div class="help-card"><div class="help-icon">👥</div><h4>Remember details</h4><p>Strengthen working memory to recall names and key information.</p></div>
+          <div class="help-card"><div class="help-icon">⚡</div><h4>Think faster under pressure</h4><p>Faster processing helps you respond quickly and avoid afternoon fog.</p></div>
+          <div class="help-card"><div class="help-icon">🔄</div><h4>Adapt when plans change</h4><p>Cognitive flexibility training helps you pivot smoothly.</p></div>
+          <div class="help-card"><div class="help-icon">🌿</div><h4>Recover from burnout</h4><p>Adaptive difficulty means you train at your current capacity.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tabs -->
+    <section class="container">
+      <div class="tabs-section">
+        <h2>Everything you need, nothing you don't</h2>
+        <nav class="tab-nav" id="tabNav">
+          <button class="active" data-tab="today">🧠 Today</button>
+          <button data-tab="train">🎯 Train</button>
+          <button data-tab="insights">📈 Insights</button>
+          <button data-tab="connect">🤝 Connect</button>
+          <button data-tab="you">👤 You</button>
+        </nav>
+        <div class="tab-content-panel" id="tabContent"></div>
+      </div>
+    </section>
+    <section class="container">
+      <div class="trust-section">
+        <h3>Why trust Cognetra</h3>
+        <p>Built with privacy-first architecture, transparent scientific language, and clear limitation boundaries.</p>
+        <div class="trust-grid">
+          <div class="trust-card"><h4>Privacy first</h4><p>No account required. Brain data stays on-device unless you explicitly opt in.</p></div>
+          <div class="trust-card"><h4>Research-informed</h4><p>Protocols map to ACTIVE Trial, UFOV, NASA PVT, and peer-reviewed cognitive methods.</p></div>
+          <div class="trust-card"><h4>Scientifically honest</h4><p>Cognetra is a wellness product, not a diagnostic tool, with limitations communicated openly.</p></div>
+        </div>
+        <div class="built-by">Built by Cognetra Labs.</div>
       </div>
     </section>
 
@@ -556,55 +643,16 @@
       </div>
     </section>
 
-    <!-- What -->
-    <section class="container">
-      <div class="what-section">
-        <h2>What Cognetra is</h2>
-        <div class="what-grid">
-          <div class="what-card"><h4>📊 A cognitive cockpit</h4><p>See your real‑time Processing Efficiency, domain strength across 5 areas, and a personalised daily plan in one glance.</p></div>
-          <div class="what-card"><h4>🔒 Private by default</h4><p>Brain data stays on‑device. No cloud uploads, no sign‑in required. Cloud Vault backup is opt‑in only.</p></div>
-          <div class="what-card"><h4>🔬 Built on research</h4><p>11 exercises mapped to peer‑reviewed protocols: ACTIVE trial, NASA PVT, Wisconsin Card Sort, UFOV, and 200+ dual n‑back studies.</p></div>
-          <div class="what-card"><h4>🧠 Socratic AI coaching</h4><p>Nova asks questions that build metacognition — all processing on‑device, never sent to servers.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How It Helps -->
-    <section class="container">
-      <div class="helps-section">
-        <h2>How Cognetra improves your daily life</h2>
-        <p>Research‑informed training that translates to real‑world cognitive performance.</p>
-        <div class="helps-grid">
-          <div class="help-card"><div class="help-icon">💼</div><h4>Power through meetings</h4><p>Sustained attention training keeps you engaged during long presentations.</p></div>
-          <div class="help-card"><div class="help-icon">👥</div><h4>Remember details</h4><p>Strengthen working memory to recall names and key information.</p></div>
-          <div class="help-card"><div class="help-icon">⚡</div><h4>Think faster under pressure</h4><p>Faster processing helps you respond quickly and avoid afternoon fog.</p></div>
-          <div class="help-card"><div class="help-icon">🔄</div><h4>Adapt when plans change</h4><p>Cognitive flexibility training helps you pivot smoothly.</p></div>
-          <div class="help-card"><div class="help-icon">👁</div><h4>Stay aware of surroundings</h4><p>Peripheral Vision Challenge trains UFOV — the ACTIVE trial's dementia‑risk protocol.</p></div>
-          <div class="help-card"><div class="help-icon">🌿</div><h4>Recover from burnout</h4><p>Adaptive difficulty means you train at your current capacity.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Interactive Tabs -->
-    <section class="container">
-      <div class="tabs-section">
-        <h2>Everything you need, nothing you don't</h2>
-        <nav class="tab-nav" id="tabNav">
-          <button class="active" data-tab="today">🧠 Today</button>
-          <button data-tab="train">🎯 Train</button>
-          <button data-tab="insights">📈 Insights</button>
-          <button data-tab="connect">🤝 Connect</button>
-          <button data-tab="you">👤 You</button>
-        </nav>
-        <div class="tab-content-panel" id="tabContent"></div>
-      </div>
-    </section>
-
     <footer class="container">
       <div class="footer-inner">
         <div class="footer-left">© 2026 Cognetra · No accounts. No cloud. Just clarity.</div>
         <div class="footer-links">
-          <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Transparency</a><a href="#">Limitations</a>
+          <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/transparency">Transparency</a><a href="/statement-of-limitations">Limitations</a><a href="/about">About</a><a href="/contact">Contact</a>
+        </div>
+        <div class="footer-links">
+          <a href="https://x.com/cognetra" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://instagram.com/cognetra" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://linkedin.com/company/cognetra" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
     </footer>
