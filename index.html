@@ -166,17 +166,17 @@
     /* Phone */
     .phone-frame {
       width: 300px; height: 620px; margin: 0 auto;
-      border-radius: 40px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: linear-gradient(180deg, #0D1628 0%, #0A1224 100%);
-      box-shadow: 0 0 0 6px #060B18, 0 0 0 7px rgba(255,255,255,0.05), 0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(92,107,192,0.18);
-      padding: 16px; position: relative; overflow: hidden;
+      border-radius: 46px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: #0A0E17;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      padding: 7px; position: relative; overflow: hidden;
     }
-    .phone-notch { width: 80px; height: 24px; border-radius: 0 0 14px 14px; background: #05080F; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 10; }
+    .phone-notch { width: 106px; height: 28px; border-radius: 16px; background: #05080F; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); z-index: 12; border: 1px solid rgba(255,255,255,0.04); }
     .phone-screen {
-      height: 100%; border-radius: 26px;
+      height: 100%; border-radius: 39px;
       background: linear-gradient(180deg, #10203A 0%, #0A1528 100%);
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.07);
       overflow: hidden; position: relative;
     }
     .phone-view {
@@ -290,16 +290,42 @@
       .what-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 680px) {
-      .container { padding: 0 16px; }
+      .container { padding: 0 14px; }
       .header-cta, .header-badge { display: none; }
-      .hero h1 { font-size: 34px; }
+      .header-inner { height: 64px; }
+      .logo-text { font-size: 22px; }
+      .hero { gap: 22px; padding-top: 24px; }
+      .hero h1 { font-size: 30px; line-height: 1.12; }
+      .hero-sub { font-size: 18px; line-height: 1.45; }
+      .hero-trust { gap: 6px; }
+      .hero-trust span { font-size: 11px; padding: 6px 10px; }
+      .hero-cta { width: 100%; justify-content: center; padding: 14px 20px; }
       .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .stat-card { padding: 14px; }
+      .stat-number { font-size: 30px; }
+      .stat-label { font-size: 11px; line-height: 1.35; }
+      .founders-card { margin: 28px 0 36px; padding: 20px; }
+      .founders-card h3 { font-size: 16px; }
+      .founders-card p { font-size: 13px; line-height: 1.45; }
+      .founders-stat { padding: 12px; min-width: 0; }
+      .founders-stat b { font-size: 20px; }
       .helps-grid { grid-template-columns: 1fr; }
       .capture-row { grid-template-columns: 1fr; }
+      .capture-card { padding: 18px; margin-bottom: 42px; }
+      .capture-input, .capture-btn { font-size: 14px; }
+      .capture-btn { width: 100%; }
       .founders-stats { flex-direction: column; }
-      .tab-nav { overflow-x: auto; }
-      .phone-frame { width: min(86vw, 292px); height: min(74vh, 590px); padding: 14px; border-radius: 34px; }
-      .phone-screen { border-radius: 22px; }
+      .tab-nav { overflow-x: auto; margin-bottom: 14px; }
+      .tab-nav button { min-width: 100px; font-size: 12px; padding: 10px 12px; }
+      .tab-content-panel { padding: 18px; min-height: 0; }
+      .tab-content-panel h3 { font-size: 18px; margin-bottom: 12px; }
+      .tab-points li { font-size: 13px; padding: 10px 12px; }
+      .what-section h2, .helps-section h2, .tabs-section h2 { font-size: 26px; margin-bottom: 16px; }
+      .what-card, .help-card { padding: 16px; }
+      footer { margin-top: 36px; padding: 24px 0; }
+      .phone-frame { width: min(86vw, 292px); height: min(74vh, 590px); padding: 7px; border-radius: 42px; }
+      .phone-screen { border-radius: 36px; }
+      .phone-notch { width: 96px; height: 26px; top: 7px; border-radius: 14px; }
       .phone-tab-bar { height: 52px; left: 7px; right: 7px; bottom: 7px; }
       .phone-tab-icon { font-size: 14px; }
       .phone-tab-label { font-size: 7px; }
@@ -315,6 +341,9 @@
     @media (max-width: 380px) {
       .phone-frame { width: min(90vw, 276px); height: min(70vh, 560px); }
       .phone-view { padding-bottom: 80px; }
+      .hero h1 { font-size: 28px; }
+      .hero-sub { font-size: 17px; }
+      .tab-nav button { min-width: 92px; font-size: 11px; }
     }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
