@@ -546,7 +546,7 @@
         captureStatus.className = 'capture-status error';
         captureStatus.innerHTML = isBackendMissing
           ? '⚠ Waitlist backend is not reachable yet. Deploy with API routes + env vars, then retry.'
-          : '⚠ Something went wrong. Please try again or email us directly at <strong>hello@cognetra.app</strong>.';
+          : `⚠ ${message || 'Something went wrong. Please try again or email us directly at hello@cognetra.app.'}`;
         joinButton.disabled = false;
         joinButton.textContent = 'Join Waitlist';
       }
