@@ -108,7 +108,7 @@ async function logWaitlistEvent(event) {
   }
 }
 
-async function sendEmail({ to, subject, html }) {
+async function sendEmail({ to, subject, html, headers }) {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
   if (!key || !from) throw new Error('Missing RESEND_API_KEY or RESEND_FROM');
@@ -122,7 +122,8 @@ async function sendEmail({ to, subject, html }) {
       from,
       to: [to],
       subject,
-      html
+      html,
+      headers: headers || undefined
     })
   });
   if (!resp.ok) {
