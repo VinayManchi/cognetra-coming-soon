@@ -15,6 +15,7 @@ Premium coming soon page for cognetra.app
 - `vercel.json` — Vercel deployment config
 - `api/waitlist/join.js` — Waitlist signup endpoint (double opt-in)
 - `api/waitlist/confirm.js` — Email confirmation endpoint
+- `api/waitlist/unsubscribe.js` — One-click unsubscribe endpoint
 - `waitlist.schema.sql` — Database schema
 - `.env.example` — Required environment variables
 
@@ -34,7 +35,8 @@ Premium coming soon page for cognetra.app
 3. Verify your sender domain in Resend and set `RESEND_FROM`.
 4. Optional but recommended: configure Cloudflare Turnstile and set `TURNSTILE_SECRET_KEY`.
 5. Set `TURNSTILE_SITE_KEY` in `index.html` (search for `const TURNSTILE_SITE_KEY = ''`).
-6. Deploy. The form in `index.html` posts to `/api/waitlist/join`.
+6. Set `WAITLIST_SIGNING_SECRET` for signed unsubscribe links.
+7. Deploy. The form in `index.html` posts to `/api/waitlist/join`.
 
 Flow:
 - User submits email + consent.

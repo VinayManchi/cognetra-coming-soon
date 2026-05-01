@@ -4,6 +4,7 @@ const {
   normalizeEmail,
   hashToken,
   randomToken,
+  signEmailAction,
   getBaseUrl,
   getClientIp,
   supabaseRequest,
@@ -88,13 +89,15 @@ module.exports = async function handler(req, res) {
     }
 
     const confirmUrl = `${getBaseUrl(req)}/api/waitlist/confirm?email=${encodeURIComponent(email)}&token=${token}`;
+    const unsubscribeSig = signEmailAction(email, 'unsubscribe');
+    const unsubscribeUrl = `${getBaseUrl(req)}/api/waitlist/unsubscribe?email=${encodeURIComponent(email)}&sig=${unsubscribeSig}`;
     await sendEmail({
       to: email,
       subject: 'Confirm your Cognetra waitlist spot',
       html: `
         <div style="margin:0;padding:24px;background:#F3F5F8;">
           <div style="font-family:Inter,Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
-            <div style="padding:20px 24px;background:#0F1F3A;background-color:#0F1F3A;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div style="padding:20px 24px;background:#0A0A0C;background-color:#0A0A0C;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.08);">
               <div style="font-size:12px;letter-spacing:0.12em;opacity:0.85;text-transform:uppercase;">Cognetra</div>
               <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;">Confirm your waitlist request</h1>
             </div>
@@ -106,12 +109,15 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#334155;text-transform:uppercase;margin-bottom:8px;">What to expect</div>
                 <ul style="padding-left:18px;margin:0;color:#334155;font-size:13px;line-height:1.7;">
                   <li>Privacy-first cognitive training built on peer-reviewed protocols.</li>
-                  <li>11 exercises across 5 cognitive domains.</li>
+                  <li>11 exercises across five cognitive domains.</li>
                   <li>Early access updates for launch and Founder's Circle milestones.</li>
                 </ul>
               </div>
               <p style="margin:14px 0 0;font-size:13px;line-height:1.6;color:#475467;">This secure link expires in 48 hours.</p>
               <p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#475467;">If you did not request this, you can safely ignore this email.</p>
+              <p style="margin:12px 0 0;">
+                <a href="${unsubscribeUrl}" style="display:inline-block;padding:8px 14px;background:#FFFFFF;color:#334155;text-decoration:none;border:1px solid #CBD5E1;border-radius:999px;font-weight:600;font-size:12px;">Unsubscribe</a>
+              </p>
             </div>
             <div style="padding:14px 24px;border-top:1px solid #E5E7EB;background:#FAFAFA;color:#667085;font-size:12px;line-height:1.5;">
               Train your brain. Own your data. No account required.

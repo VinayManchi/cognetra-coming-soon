@@ -1,6 +1,7 @@
 const {
   normalizeEmail,
   hashToken,
+  signEmailAction,
   getBaseUrl,
   getClientIp,
   supabaseRequest,
@@ -75,7 +76,7 @@ module.exports = async function handler(req, res) {
         html: `
           <div style="margin:0;padding:24px;background:#F3F5F8;">
             <div style="font-family:Inter,Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
-              <div style="padding:20px 24px;background:#0F1F3A;background-color:#0F1F3A;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.08);">
+              <div style="padding:20px 24px;background:#0A0A0C;background-color:#0A0A0C;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.08);">
                 <div style="font-size:12px;letter-spacing:0.12em;opacity:0.85;text-transform:uppercase;">Cognetra</div>
                 <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;">You are confirmed</h1>
               </div>
@@ -91,6 +92,9 @@ module.exports = async function handler(req, res) {
                   </ul>
                 </div>
                 <a href="${home}" style="display:inline-block;padding:11px 18px;background:#0F172A;color:#FFFFFF;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Return to website</a>
+                <p style="margin:12px 0 0;">
+                  <a href="${home}/api/waitlist/unsubscribe?email=${encodeURIComponent(email)}&sig=${signEmailAction(email, 'unsubscribe')}" style="display:inline-block;padding:8px 14px;background:#FFFFFF;color:#334155;text-decoration:none;border:1px solid #CBD5E1;border-radius:999px;font-weight:600;font-size:12px;">Unsubscribe</a>
+                </p>
               </div>
               <div style="padding:14px 24px;border-top:1px solid #E5E7EB;background:#FAFAFA;color:#667085;font-size:12px;line-height:1.5;">
                 Professional updates only. No noise. No third-party selling of your email.

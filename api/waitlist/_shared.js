@@ -19,6 +19,23 @@ function randomToken() {
   return crypto.randomBytes(24).toString('hex');
 }
 
+function getSigningSecret() {
+  return process.env.WAITLIST_SIGNING_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || 'fallback_secret_change_me';
+}
+
+function signEmailAction(email, action) {
+  return crypto
+    .createHmac('sha256', getSigningSecret())
+    .update(`${action}:${normalizeEmail(email)}`)
+    .digest('hex');
+}
+
+function verifyEmailActionSignature(email, action, signature) {
+  if (!signature) return false;
+  const expected = signEmailAction(email, action);
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(String(signature)));
+}
+
 function getBaseUrl(req) {
   if (process.env.APP_BASE_URL) return process.env.APP_BASE_URL.replace(/\/$/, '');
   const proto = req.headers['x-forwarded-proto'] || 'https';
@@ -120,6 +137,8 @@ module.exports = {
   normalizeEmail,
   hashToken,
   randomToken,
+  signEmailAction,
+  verifyEmailActionSignature,
   getBaseUrl,
   getClientIp,
   supabaseRequest,
